@@ -7,6 +7,9 @@
 <style>
 * {margin:0; padding:0; box-sizing:border-box; font-family:sans-serif;}
 body {background:#eaf2fa; padding:15px; max-width:520px; margin:0 auto; padding-bottom:80px;}
+.logo-container {text-align:center; margin-bottom:15px; padding:15px 10px; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,85,184,0.1); min-height:140px; display:flex; align-items:center; justify-content:center;}
+.logo-img {max-width:220px; width:100%; height:auto;}
+.logo-texto {font-size:24px; font-weight:bold; color:#0055b8; padding:20px 10px; text-align:center; display:none;}
 h1 {color:#0055b8; text-align:center; margin-bottom:15px; font-size:20px;}
 .aviso {background:#e6f0fa; border-left:4px solid #0055b8; padding:12px; margin-bottom:15px; border-radius:0 8px 8px 0; font-size:14px; color:#004494;}
 .card {background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 10px rgba(0,85,184,0.1);}
@@ -56,6 +59,20 @@ button:hover {opacity:0.92;}
   <p class="contato">Cristiano Bastos<br>27 992287-3818</p>
 </div>
 <div id="conteudoApp" class="conteudo-normal">
+
+<!-- ✅ LOGO DA EMPRESA -->
+<div class="logo-container">
+  <img src="logo-forca-sul.jpg" alt="Força Sul Consórcio" class="logo-img" id="minhaLogo">
+  <div id="textoFallback" class="logo-texto">FORÇA SUL<br>Consórcio</div>
+</div>
+<script>
+  const imgLogo = document.getElementById('minhaLogo');
+  imgLogo.onerror = function() {
+    this.style.display = 'none';
+    document.getElementById('textoFallback').style.display = 'block';
+  };
+</script>
+
 <h1>Registro de Atividades — RDO</h1>
 <div class="aviso">Preencha os dados, selecione as fotos e clique em Montar e Salvar</div>
 <div class="card">
@@ -283,6 +300,7 @@ async function montarESalvar(){
   const textoFotos = qtdFotos > 0 ? `Fotos anexadas: ${qtdFotos} foto(s)` : 'Nenhuma foto selecionada';
   
   mensagemFinal = `REGISTRO DE ATIVIDADE - ${area.toUpperCase()}
+Força Sul Consórcio
 Enviado por: ${quem}
 Descrição:
 ${desc}
@@ -304,12 +322,14 @@ Força Sul Consórcio`;
   document.getElementById('textoMsg').innerText = mensagemFinal;
   document.getElementById('previaMsg').style.display = 'block';
   
+  const fotosParaEnvio = qtdFotos > 0 ? fotosBase64.join(' | ') : 'Sem fotos';
+  
   const dados = {
     area, quem, descricao: desc, local, data: dt, apoio: textoApoio,
     nomeMecanica: nomeMec || '-', nomeCivil: nomeCiv || '-',
     participantes: selecionados.join(', '), status,
     materiaisFaltantes: matFaltantes || '-', observacoes: obs || '-',
-    fotos: qtdFotos > 0 ? fotosBase64.join(' | ') : 'Sem fotos'
+    fotos: fotosParaEnvio
   };
   
   try {
@@ -322,7 +342,9 @@ Força Sul Consórcio`;
     document.getElementById('btnCopiar').style.display = 'block';
     document.getElementById('btnWpp').style.display = 'block';
     document.getElementById('btnNovo').style.display = 'block';
-  } catch (e) { alert('Erro: ' + e.message); }
+  } catch (e) { 
+    alert('Erro: ' + e.message); 
+  }
 }
 
 function enviarWpp(){
