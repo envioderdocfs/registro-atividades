@@ -1,322 +1,58 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registro de Atividades - RDO</title>
-<style>
-* {margin:0; padding:0; box-sizing:border-box; font-family:sans-serif;}
-body {background:#eaf2fa; padding:15px; max-width:520px; margin:0 auto;}
-h1 {color:#0055b8; text-align:center; margin-bottom:15px; font-size:20px;}
-.aviso {background:#e6f0fa; border-left:4px solid #0055b8; padding:12px; margin-bottom:15px; border-radius:0 8px 8px 0; font-size:14px; color:#004494;}
-.card {background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 10px rgba(0,85,184,0.1);}
-label {display:block; margin:12px 0 6px; font-weight:bold; color:#0055b8; font-size:15px;}
-input, textarea, select {width:100%; padding:12px; border:2px solid #b3d1f0; border-radius:8px; font-size:16px; background:#fafcfe;}
-textarea {min-height:70px; resize:vertical;}
-.nomes {display:flex; flex-wrap:wrap; gap:8px; margin:10px 0;}
-.nome-item {background:#e6f0fa; padding:10px 14px; border-radius:20px; display:flex; align-items:center; gap:8px; font-size:15px; color:#0055b8; border:1px solid #b3d1f0;}
-.nome-item.temporario {background:#fff8e1; border-color:#ffb300; color:#e65100;}
-.apoio-area {background:#f0f6fc; border:2px solid #b3d1f0; padding:15px; border-radius:8px; margin:15px 0;}
-.apoio-opcao {display:flex; align-items:center; gap:10px; margin:10px 0; font-size:15px; justify-content:flex-start;}
-.apoio-opcao input[type="checkbox"] {width:auto; margin:0;}
-.apoio-nome {margin:10px 0 0 28px;}
-button {padding:14px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer; margin-top:10px; width:100%;}
-.btn-principal {background:#0055b8; color:white;}
-.btn-azul {background:#0077ed; color:white; padding:10px 14px; margin:5px 5px 5px 0; font-size:14px; width:auto;}
-.btn-verde {background:#2e7d32; color:white; padding:10px 16px; margin:5px 0; font-size:15px; width:auto;}
-.btn-whatsapp {background:#25D366; color:white; margin-top:15px; display:none;}
-.previa {background:#f0f6fc; border:1px solid #0055b8; padding:15px; border-radius:8px; margin-top:20px; white-space:pre-wrap; font-size:14px; line-height:1.6; display:none;}
-.sucesso {background:#e8f5e9; border-left:4px solid #2e7d32; padding:12px; margin-top:15px; border-radius:0 8px 8px 0; font-size:14px; color:#1b5e20; display:none;}
-.tela-expirada {background:#ffebee; border:2px solid #d32f2f; padding:30px 20px; border-radius:12px; text-align:center; margin-top:20px; display:none;}
-.tela-expirada h2 {color:#c62828; margin-bottom:20px; font-size:22px;}
-.tela-expirada p {color:#b71c1c; font-size:16px; line-height:1.8;}
-.tela-expirada .contato {font-weight:bold; margin-top:10px; font-size:17px;}
-.conteudo-normal {display:block;}
-.adicionar-area {background:#f9fbe7; border:2px solid #cddc39; padding:15px; border-radius:8px; margin:15px 0;}
-.adicionar-linha {display:flex; gap:8px; align-items:center;}
-.adicionar-linha input {flex:1; margin:0;}
-.area-selecao {background:#eef5ff; border:2px solid #90caf9; padding:15px; border-radius:8px; margin:15px 0;}
-.area-opcao {display:flex; align-items:center; gap:10px; margin:8px 0; font-size:15px; justify-content:flex-start;}
-.area-opcao input[type="radio"] {width:auto; margin:0;}
-</style>
-</head>
-<body>
-
-<div id="telaExpirada" class="tela-expirada">
-  <h2>Sistema Expirado</h2>
-  <p>Para continuar com a utilização, entrar em contato com o Desenvolvedor do Aplicativo.</p>
-  <p class="contato">Cristiano Bastos<br>27 992287-3818</p>
-</div>
-
-<div id="conteudoApp" class="conteudo-normal">
-<h1>Registro de Atividades — RDO</h1>
-
-<div class="aviso">Preencha os dados e clique em Montar e Salvar</div>
-
-<div class="card">
-  <label>1. Área Responsável *</label>
-  <div class="area-selecao">
-    <label class="area-opcao">
-      <input type="radio" name="area" value="Elétrica"> Elétrica
-    </label>
-    <label class="area-opcao">
-      <input type="radio" name="area" value="Civil"> Civil
-    </label>
-    <label class="area-opcao">
-      <input type="radio" name="area" value="Mecânica"> Mecânica
-    </label>
-  </div>
-
-  <label>2. Seu Nome *</label>
-  <input type="text" id="quemEnvia" placeholder="Ex: Cristiano, Rildo...">
-
-  <label>3. Descrição da Atividade *</label>
-  <textarea id="desc" placeholder="O que foi feito?"></textarea>
-
-  <label>4. Local *</label>
-  <input type="text" id="local" placeholder="Ex: Subestação 2, Painel Principal...">
-
-  <label>5. Data *</label>
-  <input type="date" id="data">
-
-  <label>6. Apoio de Outras Áreas</label>
-  <div class="apoio-area">
-    <label class="apoio-opcao">
-      <input type="checkbox" id="apoioMecanica" onchange="mostrarApoio()"> Apoio da Mecânica
-    </label>
-    <div id="nomeMecArea" class="apoio-nome" style="display:none;">
-      <input type="text" id="nomeMec" placeholder="Nome da pessoa">
-    </div>
-    <label class="apoio-opcao">
-      <input type="checkbox" id="apoioCivil" onchange="mostrarApoio()"> Apoio da Civil
-    </label>
-    <div id="nomeCivArea" class="apoio-nome" style="display:none;">
-      <input type="text" id="nomeCiv" placeholder="Nome da pessoa">
-    </div>
-  </div>
-
-  <label>7. Participantes da Equipe *</label>
-  <button type="button" class="btn-azul" onclick="marcarTudo()">Marcar Todos</button>
-  <button type="button" class="btn-azul" onclick="desmarcarTudo()">Desmarcar Todos</button>
-  
-  <div class="adicionar-area">
-    <label>Adicionar colaborador temporário</label>
-    <div class="adicionar-linha">
-      <input type="text" id="novoColab" placeholder="Digite o nome...">
-      <button type="button" class="btn-verde" style="width:auto;" onclick="adicionarColaborador()">OK</button>
-    </div>
-  </div>
-  
-  <div class="nomes" id="listaNomes"></div>
-
-  <label>8. Status da Atividade *</label>
-  <select id="statusAtividade">
-    <option value="Concluída">Concluída</option>
-    <option value="Parcialmente Concluída">Parcialmente Concluída</option>
-    <option value="Em Andamento">Em Andamento</option>
-    <option value="Pendente">Pendente / Aguardando Material</option>
-  </select>
-
-  <label>9. Materiais Necessários / Pendentes</label>
-  <textarea id="materiaisFaltantes" placeholder="O que ainda falta..."></textarea>
-
-  <label>10. Observações Gerais</label>
-  <textarea id="observacoes" placeholder="Detalhes, próximos passos..."></textarea>
-
-  <button class="btn-principal" onclick="montarESalvar()">MONTAR E SALVAR</button>
-
-  <div id="previaMsg" class="previa">
-Mensagem pronta:
-----------------------------------------
-<span id="textoMsg"></span>
-  </div>
-
-  <div id="sucessoPlanilha" class="sucesso">Salvo com sucesso!</div>
-
-  <button class="btn-whatsapp" id="btnWpp" onclick="enviarWpp()">ENVIAR PARA O GRUPO</button>
-
-  <button class="btn-principal" style="background:#ff9800; margin-top:15px; display:none;" id="btnNovo" onclick="novoLancamento()">NOVO REGISTRO</button>
-</div>
-</div>
-
-<script>
-const DATA_EXPIRACAO = new Date(2026, 11, 31);
-const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbyHM64DP3uFWI1Xq7gRuFXWniUJSEqovc8Bh86q1UlxljNZaDpJXkcjRZCT2fASLiaS/exec";
-const LINK_GRUPO = "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi";
-
-let mensagemFinal = "";
-let nomesEquipe = [
-  "Arlan", "Chrystian", "Cleber", "Cristiano", "Elias", "Herberson",
-  "Jackson", "Jaudecy", "Juracy", "Lázaro", "Maicon", "Marcelo",
-  "Matheus", "Rafael", "Rildo", "Steve"
-];
-const temporarios = new Set();
-
-function verificarExpiracao() {
-  const hoje = new Date(); hoje.setHours(0,0,0,0);
-  const expira = new Date(DATA_EXPIRACAO); expira.setHours(0,0,0,0);
-  if (hoje > expira) {
-    document.getElementById('telaExpirada').style.display = 'block';
-    document.getElementById('conteudoApp').style.display = 'none';
-    return false;
-  }
-  return true;
-}
-
-function mostrarApoio() {
-  document.getElementById('nomeMecArea').style.display = 
-    document.getElementById('apoioMecanica').checked ? 'block' : 'none';
-  document.getElementById('nomeCivArea').style.display = 
-    document.getElementById('apoioCivil').checked ? 'block' : 'none';
-}
-
-function carregarNomes() {
-  const selecionados = Array.from(document.querySelectorAll('.chk:checked')).map(c=>c.value);
-  const lista = document.getElementById('listaNomes'); lista.innerHTML = '';
-  nomesEquipe.sort((a,b)=>a.localeCompare(b,'pt-BR'));
-  nomesEquipe.forEach(nome => {
-    const label = document.createElement('label');
-    label.className = 'nome-item' + (temporarios.has(nome) ? ' temporario' : '');
-    const marcado = selecionados.includes(nome) ? 'checked' : '';
-    label.innerHTML = `<input type="checkbox" class="chk" value="${nome}" ${marcado}> ${nome}${temporarios.has(nome) ? ' (temporário)' : ''}`;
-    lista.appendChild(label);
-  });
-}
-
-function adicionarColaborador() {
-  const nome = document.getElementById('novoColab').value.trim();
-  if (!nome) { alert('Digite um nome!'); return; }
-  if (nomesEquipe.includes(nome)) { alert('Já está na lista!'); document.getElementById('novoColab').value=''; return; }
-  nomesEquipe.push(nome); temporarios.add(nome); carregarNomes();
-  document.getElementById('novoColab').value = '';
-}
-
-function marcarTudo(){ document.querySelectorAll('.chk').forEach(c=>c.checked=true); }
-function desmarcarTudo(){ document.querySelectorAll('.chk').forEach(c=>c.checked=false); }
-
-function formatarData(d){
-  const x = new Date(d + 'T00:00:00');
-  return String(x.getDate()).padStart(2,'0') + '/' + String(x.getMonth()+1).padStart(2,'0') + '/' + x.getFullYear();
-}
-
-async function montarESalvar(){
-  const areaSel = document.querySelector('input[name="area"]:checked');
-  const area = areaSel ? areaSel.value : '';
-  const quem = document.getElementById('quemEnvia').value.trim();
-  const desc = document.getElementById('desc').value.trim();
-  const local = document.getElementById('local').value.trim();
-  const data = document.getElementById('data').value;
-  const mec = document.getElementById('apoioMecanica').checked;
-  const civ = document.getElementById('apoioCivil').checked;
-  const nomeMec = document.getElementById('nomeMec').value.trim();
-  const nomeCiv = document.getElementById('nomeCiv').value.trim();
-  const selecionados = Array.from(document.querySelectorAll('.chk:checked')).map(c=>c.value);
-  const status = document.getElementById('statusAtividade').value;
-  const matFaltantes = document.getElementById('materiaisFaltantes').value.trim();
-  const obs = document.getElementById('observacoes').value.trim();
-
-  if(!area){ alert('Selecione a Área!'); return; }
-  if(!quem){ alert('Digite seu nome!'); return; }
-  if(!desc){ alert('Descreva a atividade!'); return; }
-  if(!local){ alert('Digite o local!'); return; }
-  if(!data){ alert('Selecione a data!'); return; }
-  if(selecionados.length === 0){ alert('Selecione pelo menos um participante!'); return; }
-
-  const dt = formatarData(data);
-  let textoApoio = 'Não houve apoio de outras áreas';
-  if (mec && civ) {
-    textoApoio = 'Apoio da Mecânica' + (nomeMec ? ': ' + nomeMec : '') + ' e da Civil' + (nomeCiv ? ': ' + nomeCiv : '');
-  } else if (mec) {
-    textoApoio = 'Apoio da Mecânica' + (nomeMec ? ': ' + nomeMec : '');
-  } else if (civ) {
-    textoApoio = 'Apoio da Civil' + (nomeCiv ? ': ' + nomeCiv : '');
-  }
-
-  const listaFormatada = selecionados.map(n => n + (temporarios.has(n) ? ' (temporário)' : '')).join('\n');
-
-  mensagemFinal = `REGISTRO DE ATIVIDADE - ${area.toUpperCase()}
-
-Enviado por: ${quem}
-
-Descrição:
-${desc}
-
-Local: ${local}
-Data: ${dt}
-
-Apoio:
-${textoApoio}
-
-Equipe presente:
-${listaFormatada}
-
-Status: ${status}
-
-Materiais Necessários/Pendentes:
-${matFaltantes || 'Não há'}
-
-Observações:
-${obs || 'Sem observações'}
-
----
-Força Sul Consórcio`;
-
-  document.getElementById('textoMsg').innerText = mensagemFinal;
-  document.getElementById('previaMsg').style.display = 'block';
-
-  const dados = {
-    area, quem, descricao: desc, local, data: dt, apoio: textoApoio,
-    nomeMecanica: nomeMec || '-', nomeCivil: nomeCiv || '-',
-    participantes: selecionados.join(', '), status,
-    materiaisFaltantes: matFaltantes || '-', observacoes: obs || '-'
-  };
-
+function doPost(e) {
   try {
-    await fetch(URL_APPS_SCRIPT, {
-      method: 'POST', mode: 'no-cors',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(dados)
-    });
-    document.getElementById('sucessoPlanilha').style.display = 'block';
-    document.getElementById('btnWpp').style.display = 'block';
-    document.getElementById('btnNovo').style.display = 'block';
-  } catch (e) { alert('Erro: ' + e.message); }
+    const dadosRecebidos = JSON.parse(e.postData.contents);
+    
+    const planilha = SpreadsheetApp.getActiveSpreadsheet();
+    const aba = planilha.getSheetByName("Registro") || planilha.getActiveSheet();
+    
+    const cabecalho = [
+      "Data/Hora Registro",
+      "Área",
+      "Quem Envia",
+      "Descrição",
+      "Local",
+      "Data Atividade",
+      "Apoio",
+      "Nome - Mecânica",
+      "Nome - Civil",
+      "Participantes da Equipe",
+      "Fotos",
+      "Status da Atividade",
+      "Materiais Necessários / Pendentes",
+      "Observações"
+    ];
+    
+    if (!aba.getRange(1, 1).getValue()) {
+      aba.getRange(1, 1, 1, cabecalho.length).setValues([cabecalho]).setFontWeight("bold");
+    }
+    
+    const linha = [
+      new Date(),
+      dadosRecebidos.area || "-",
+      dadosRecebidos.quem || "-",
+      dadosRecebidos.descricao || "-",
+      dadosRecebidos.local || "-",
+      dadosRecebidos.data || "-",
+      dadosRecebidos.apoio || "Não houve apoio de outras áreas",
+      dadosRecebidos.nomeMecanica || "-",
+      dadosRecebidos.nomeCivil || "-",
+      dadosRecebidos.participantes || "-",
+      dadosRecebidos.fotos || "Sem fotos",
+      dadosRecebidos.status || "Não informado",
+      dadosRecebidos.materiaisFaltantes || "-",
+      dadosRecebidos.observacoes || "-"
+    ];
+    
+    const proximaLinha = aba.getLastRow() + 1;
+    aba.getRange(proximaLinha, 1, 1, linha.length).setValues([linha]);
+    
+    return ContentService.createTextOutput(
+      JSON.stringify({sucesso: true})
+    ).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (erro) {
+    return ContentService.createTextOutput(
+      JSON.stringify({sucesso: false, erro: erro.message})
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
 }
-
-function enviarWpp(){
-  window.open(`${LINK_GRUPO}?text=${encodeURIComponent(mensagemFinal)}`, '_blank');
-}
-
-function novoLancamento(){
-  document.querySelectorAll('input[name="area"]').forEach(r=>r.checked=false);
-  document.getElementById('quemEnvia').value = '';
-  document.getElementById('desc').value = '';
-  document.getElementById('local').value = '';
-  document.getElementById('data').value = '';
-  document.getElementById('apoioMecanica').checked = false;
-  document.getElementById('apoioCivil').checked = false;
-  document.getElementById('nomeMec').value = '';
-  document.getElementById('nomeCiv').value = '';
-  document.getElementById('nomeMecArea').style.display = 'none';
-  document.getElementById('nomeCivArea').style.display = 'none';
-  document.querySelectorAll('.chk').forEach(c=>c.checked=false);
-  document.getElementById('statusAtividade').value = 'Concluída';
-  document.getElementById('materiaisFaltantes').value = '';
-  document.getElementById('observacoes').value = '';
-  document.getElementById('previaMsg').style.display = 'none';
-  document.getElementById('sucessoPlanilha').style.display = 'none';
-  document.getElementById('btnWpp').style.display = 'none';
-  document.getElementById('btnNovo').style.display = 'none';
-  mensagemFinal = '';
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-window.onload = function() {
-  if (!verificarExpiracao()) return;
-  document.getElementById('data').valueAsDate = new Date();
-  carregarNomes();
-};
-</script>
-
-</body>
-</html>
