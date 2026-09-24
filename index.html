@@ -33,6 +33,7 @@ button:hover {opacity:0.92;}
 .previa {background:#f0f6fc; border:1px solid #0055b8; padding:15px; border-radius:8px; margin-top:20px; white-space:pre-wrap; font-size:14px; line-height:1.6; display:none;}
 .sucesso {background:#e8f5e9; border-left:4px solid #2e7d32; padding:10px 12px; margin-top:10px; border-radius:0 8px 8px 0; font-size:13px; color:#1b5e20; display:none;}
 .aviso-envio {background:#fff8e1; border-left:4px solid #ff9800; padding:10px 12px; margin-top:10px; border-radius:0 8px 8px 0; font-size:13px; color:#e65100; display:none;}
+.erro-envio {background:#ffebee; border-left:4px solid #d32f2f; padding:10px 12px; margin-top:10px; border-radius:0 8px 8px 0; font-size:13px; color:#c62828; display:none;}
 .tela-expirada {background:#ffebee; border:2px solid #d32f2f; padding:30px 20px; border-radius:12px; text-align:center; margin-top:20px; display:none;}
 .tela-expirada h2 {color:#c62828; margin-bottom:20px; font-size:22px;}
 .tela-expirada p {color:#b71c1c; font-size:16px; line-height:1.8;}
@@ -74,7 +75,8 @@ button:hover {opacity:0.92;}
 </script>
 
 <h1>Registro de Atividades — RDO</h1>
-<div class="aviso">Preencha os dados, selecione as fotos e clique em Montar e Salvar</div>
+<div class="aviso">Preencha os dados, selecione as fotos e clique em Montar e Salvar<br>
+<small>📸 Fotos comprimidas — envio rápido e leve</small></div>
 <div class="card">
   <label>1. Área Responsável *</label>
   <div class="area-selecao">
@@ -155,9 +157,12 @@ Mensagem pronta:
   <button class="btn-whatsapp" id="btnWpp" style="display:none;" onclick="enviarWpp()">💬 ENVIAR PARA O GRUPO</button>
   
   <div id="avisoEnviando" class="aviso-envio" style="display:none;">
-  ⏳ Enviando dados para a planilha... pode prosseguir enquanto carrega
+  ⏳ Salvando na planilha... pode prosseguir
   </div>
   <div id="sucessoPlanilha" class="sucesso">✅ Salvo na planilha com sucesso!</div>
+  <div id="erroPlanilha" class="erro-envio" style="display:none;">
+  ⚠️ Não foi possível salvar. <button id="btnTentarNovamente" style="background:#d32f2f; color:white; padding:6px 12px; width:auto; margin:5px 0 0 0; font-size:14px;">Tentar novamente</button>
+  </div>
   
   <button class="btn-principal" style="background:#ff9800; margin-top:15px; display:none;" id="btnNovo" onclick="novoLancamento()">NOVO REGISTRO</button>
 </div>
@@ -166,8 +171,15 @@ Mensagem pronta:
 const DATA_EXPIRACAO = new Date(2026, 11, 31);
 const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzPP__6N9M13LIMHcAOnGc8jraRiV50EIPGe2TDSzfQddLcikfCAYp6RPSSD9HrhUXr/exec";
 const LINK_GRUPO = "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi";
+
+// ⚙️ Configurações de compressão
+const MAX_LARGURA = 1000;    // Mais leve = mais rápido
+const MAX_ALTURA = 1000;
+const QUALIDADE = 0.7;        // Equilíbrio entre qualidade e velocidade
+
 let mensagemFinal = "";
 let fotosBase64 = [];
+let dadosParaReenvio = null; // Guarda os dados para tentar de novo
 let nomesEquipe = [
   "Arlan", "Chrystian", "Cleber", "Cristiano", "Elias", "Herberson",
   "Jackson", "Jaudecy", "Juracy", "Lázaro", "Maicon", "Marcelo",
@@ -222,15 +234,44 @@ function formatarData(d){
   return String(x.getDate()).padStart(2,'0') + '/' + String(x.getMonth()+1).padStart(2,'0') + '/' + x.getFullYear();
 }
 
+// 📸 Compressão de imagem
+async function comprimirImagem(arquivo) {
+  return new Promise((resolve) => {
+    const leitor = new FileReader();
+    leitor.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        let largura = img.width;
+        let altura = img.height;
+        
+        if (largura > MAX_LARGURA) {
+          altura = (MAX_LARGURA / largura) * altura;
+          largura = MAX_LARGURA;
+        }
+        if (altura > MAX_ALTURA) {
+          largura = (MAX_ALTURA / altura) * largura;
+          altura = MAX_ALTURA;
+        }
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = largura;
+        canvas.height = altura;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, largura, altura);
+        resolve(canvas.toDataURL('image/jpeg', QUALIDADE));
+      };
+      img.src = e.target.result;
+    };
+    leitor.readAsDataURL(arquivo);
+  });
+}
+
 async function processarFotos(arquivos){
   for(const arquivo of arquivos){
     if(!arquivo.type.startsWith('image/')) continue;
-    const leitor = new FileReader();
-    leitor.onload = function(e){
-      fotosBase64.push(e.target.result);
-      atualizarPreview();
-    };
-    leitor.readAsDataURL(arquivo);
+    const fotoComprimida = await comprimirImagem(arquivo);
+    fotosBase64.push(fotoComprimida);
+    atualizarPreview();
   }
 }
 
@@ -270,22 +311,33 @@ function copiarTexto(){
   });
 }
 
-async function enviarParaPlanilha(dados){
+// 🔄 Função de envio com tentativa de novo
+async function enviarParaPlanilha(dados) {
   try {
-    const resposta = await fetch(URL_APPS_SCRIPT, {
-      method: 'POST', 
+    document.getElementById('avisoEnviando').style.display = 'block';
+    document.getElementById('sucessoPlanilha').style.display = 'none';
+    document.getElementById('erroPlanilha').style.display = 'none';
+    
+    await fetch(URL_APPS_SCRIPT, {
+      method: 'POST',
       mode: 'no-cors',
-      headers: {'Content-Type':'application/json'},
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(dados)
     });
+    
     document.getElementById('avisoEnviando').style.display = 'none';
     document.getElementById('sucessoPlanilha').style.display = 'block';
-  } catch (e) { 
-    document.getElementById('avisoEnviando').innerHTML = '⚠️ Erro ao salvar na planilha: ' + e.message;
-    document.getElementById('avisoEnviando').style.display = 'block';
+    dadosParaReenvio = null; // Limpa após sucesso
+    
+  } catch (e) {
+    console.log('Erro no envio:', e);
+    document.getElementById('avisoEnviando').style.display = 'none';
+    document.getElementById('erroPlanilha').style.display = 'block';
+    dadosParaReenvio = dados; // Guarda para tentar depois
   }
 }
 
+// ⚡ MENSAGEM PRIMEIRO, PLANILHA DEPOIS
 async function montarESalvar(){
   const areaSel = document.querySelector('input[name="area"]:checked');
   const area = areaSel ? areaSel.value : '';
@@ -323,7 +375,7 @@ async function montarESalvar(){
   const qtdFotos = fotosBase64.length;
   const textoFotos = qtdFotos > 0 ? `Fotos anexadas: ${qtdFotos} foto(s)` : 'Nenhuma foto selecionada';
   
-  // ✅ MENSAGEM MONTADA E EXIBIDA NA HORA
+  // ✅ MENSAGEM MONTADA E EXIBIDA IMEDIATAMENTE
   mensagemFinal = `REGISTRO DE ATIVIDADE - ${area.toUpperCase()}
 Força Sul Consórcio
 Enviado por: ${quem}
@@ -350,7 +402,7 @@ Força Sul Consórcio`;
   document.getElementById('btnWpp').style.display = 'block';
   document.getElementById('btnNovo').style.display = 'block';
   
-  // Prepara os dados
+  // Prepara dados
   const fotosParaEnvio = qtdFotos > 0 ? fotosBase64.join(' | ') : 'Sem fotos';
   const dados = {
     area, quem, descricao: desc, local, data: dt, apoio: textoApoio,
@@ -360,11 +412,19 @@ Força Sul Consórcio`;
     fotos: fotosParaEnvio
   };
   
-  // ⚡ PLANILHA VAI EM SEGUNDO PLANO — NÃO TRAVA VOCÊ
-  document.getElementById('avisoEnviando').style.display = 'block';
-  document.getElementById('sucessoPlanilha').style.display = 'none';
-  enviarParaPlanilha(dados); // Sem await, segue imediatamente
+  // 🔁 Salva para reenvio se der erro
+  dadosParaReenvio = dados;
+  
+  // ⚡ PLANILHA EM SEGUNDO PLANO — NÃO TRAVA NADA
+  enviarParaPlanilha(dados);
 }
+
+// Botão "Tentar novamente"
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.id === 'btnTentarNovamente' && dadosParaReenvio) {
+    enviarParaPlanilha(dadosParaReenvio);
+  }
+});
 
 function enviarWpp(){
   window.open(`${LINK_GRUPO}?text=${encodeURIComponent(mensagemFinal)}`, '_blank');
@@ -387,10 +447,12 @@ function novoLancamento(){
   document.getElementById('materiaisFaltantes').value = '';
   document.getElementById('observacoes').value = '';
   fotosBase64 = [];
+  dadosParaReenvio = null;
   document.getElementById('previewFotos').innerHTML = '';
   document.getElementById('previaMsg').style.display = 'none';
   document.getElementById('avisoEnviando').style.display = 'none';
   document.getElementById('sucessoPlanilha').style.display = 'none';
+  document.getElementById('erroPlanilha').style.display = 'none';
   document.getElementById('btnCopiar').style.display = 'none';
   document.getElementById('avisoCopiar').style.display = 'none';
   document.getElementById('btnWpp').style.display = 'none';
