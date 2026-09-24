@@ -16,9 +16,17 @@ h1 {color:#0055b8; text-align:center; margin-bottom:15px; font-size:20px;}
 label {display:block; margin:12px 0 6px; font-weight:bold; color:#0055b8; font-size:15px;}
 input, textarea, select {width:100%; padding:12px; border:2px solid #b3d1f0; border-radius:8px; font-size:16px; background:#fafcfe;}
 textarea {min-height:70px; resize:vertical;}
+
+/* Seleção múltipla estilo celular */
+.lista-selecao-multipla {border:2px solid #b3d1f0; border-radius:8px; background:#fafcfe; max-height:220px; overflow-y:auto; margin:8px 0;}
+.item-opcao {display:flex; align-items:center; gap:10px; padding:12px; border-bottom:1px solid #e0e8f0; cursor:pointer;}
+.item-opcao:last-child {border-bottom:none;}
+.item-opcao input {width:22px; height:22px; cursor:pointer;}
+.item-opcao.selecionado {background:#e6f0fa;}
+
 .selecionados {display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; min-height:40px;}
 .selecionado-item {background:#e6f0fa; padding:8px 12px; border-radius:20px; display:flex; align-items:center; gap:6px; font-size:14px; color:#0055b8; border:1px solid #b3d1f0;}
-.selecionado-item .remover {background:red; color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; margin-left:4px;}
+.selecionado-item .remover {background:red; color:white; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; margin-left:4px; border:none;}
 .aviso-selecao {color:#e65100; font-size:13px; margin:5px 0 10px 0;}
 .apoio-area {background:#f0f6fc; border:2px solid #b3d1f0; padding:15px; border-radius:8px; margin:15px 0;}
 .apoio-opcao {display:flex; align-items:center; gap:10px; margin:10px 0; font-size:15px; justify-content:flex-start;}
@@ -47,10 +55,13 @@ button:hover {opacity:0.92;}
 .preview-fotos {display:flex; flex-wrap:wrap; gap:10px; margin:10px 0;}
 .foto-item {position:relative;}
 .foto-item img {width:80px; height:80px; object-fit:cover; border-radius:8px; border:2px solid #0055b8;}
-.foto-item .remover {position:absolute; top:-5px; right:-5px; background:red; color:white; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer;}
+.foto-item .remover {position:absolute; top:-5px; right:-5px; background:red; color:white; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; border:none;}
 #inputFotos {display:none;}
 .aviso-copiar {background:#e3f2fd; border-left:4px solid #0288d1; padding:12px; margin-top:10px; border-radius:0 8px 8px 0; font-size:14px; color:#01579b; display:none;}
 .btn-copiar {background:#0077ed; color:white; margin-top:10px;}
+.btn-expandir {background:#f0f6fc; color:#0055b8; border:1px solid #b3d1f0; padding:10px; text-align:left; display:flex; justify-content:space-between; align-items:center;}
+.btn-expandir span {font-weight:normal; font-size:14px;}
+.icone-seta {font-size:12px;}
 </style>
 </head>
 <body>
@@ -74,7 +85,7 @@ button:hover {opacity:0.92;}
 </script>
 
 <h1>Registro de Atividades — RDO</h1>
-<div class="aviso">Selecione a área → escolha os nomes na lista</div>
+<div class="aviso">Selecione a área → marque os nomes na lista</div>
 <div class="card">
   <label>1. Área Responsável *</label>
   <div class="area-selecao">
@@ -125,9 +136,19 @@ button:hover {opacity:0.92;}
   <label>8. Participantes da Equipe *</label>
   <div id="avisoArea" class="aviso-selecao">← Selecione uma área acima para ver a lista de nomes</div>
   
-  <select id="caixaNomes" style="display:none;" onchange="adicionarParticipante(this.value)">
-    <option value="">-- Selecione um nome --</option>
-  </select>
+  <!-- Lista expansível estilo celular -->
+  <div id="blocoSelecao" style="display:none;">
+    <button type="button" class="btn-expandir" id="botaoLista" onclick="alternarLista()">
+      <span id="textoBotao">Toque para escolher os participantes</span>
+      <span class="icone-seta" id="setaLista">▼</span>
+    </button>
+    
+    <div id="listaNomesContainer" class="lista-selecao-multipla" style="display:none; margin-top:8px;">
+      <!-- Nomes gerados dinamicamente -->
+    </div>
+    
+    <button type="button" class="btn-azul" style="margin:10px 0;" onclick="confirmarSelecao()">✅ Confirmar Seleção</button>
+  </div>
   
   <div class="selecionados" id="listaSelecionados"></div>
   
@@ -186,7 +207,7 @@ const DATA_EXPIRACAO = new Date(2026, 11, 31);
 const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzPP__6N9M13LIMHcAOnGc8jraRiV50EIPGe2TDSzfQddLcikfCAYp6RPSSD9HrhUXr/exec";
 const LINK_GRUPO = "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi";
 
-// ✅ LISTA CORRIGIDA EXATAMENTE COMO PEDIDO
+// ✅ LISTA CORRIGIDA
 const equipes = {
   "Elétrica": [
     "Arlan", "Cristiano", "Juracy", "Rildo", "Steve",
@@ -205,6 +226,7 @@ const temporarios = {
 };
 
 let selecionados = [];
+let listaAberta = false;
 let mensagemFinal = "";
 let fotosBase64 = [];
 
@@ -231,37 +253,77 @@ function carregarListaNomes() {
   
   if (!areaSelecionada) {
     document.getElementById('avisoArea').style.display = 'block';
-    document.getElementById('caixaNomes').style.display = 'none';
+    document.getElementById('blocoSelecao').style.display = 'none';
     return;
   }
   
   const area = areaSelecionada.value;
   document.getElementById('avisoArea').style.display = 'none';
-  document.getElementById('caixaNomes').style.display = 'block';
+  document.getElementById('blocoSelecao').style.display = 'block';
   
   let listaNomes = [...equipes[area], ...temporarios[area]];
   listaNomes.sort((a, b) => a.localeCompare(b, 'pt-BR'));
   
-  const caixa = document.getElementById('caixaNomes');
-  caixa.innerHTML = '<option value="">-- Selecione um nome --</option>';
+  const container = document.getElementById('listaNomesContainer');
+  container.innerHTML = '';
   
   listaNomes.forEach(nome => {
-    const opt = document.createElement('option');
-    opt.value = nome;
-    opt.textContent = nome;
-    if (selecionados.includes(nome)) opt.disabled = true;
-    caixa.appendChild(opt);
+    const jaSelecionado = selecionados.includes(nome);
+    const item = document.createElement('label');
+    item.className = `item-opcao ${jaSelecionado ? 'selecionado' : ''}`;
+    item.innerHTML = `
+      <input type="checkbox" value="${nome}" ${jaSelecionado ? 'checked' : ''} onchange="atualizarEstilo(this)">
+      ${nome}
+    `;
+    container.appendChild(item);
   });
+  
+  atualizarTextoBotao();
+  listaAberta = false;
+  document.getElementById('listaNomesContainer').style.display = 'none';
+  document.getElementById('setaLista').textContent = '▼';
 }
 
-function adicionarParticipante(nome) {
-  if (!nome) return;
-  if (selecionados.includes(nome)) return;
+function alternarLista() {
+  listaAberta = !listaAberta;
+  document.getElementById('listaNomesContainer').style.display = listaAberta ? 'block' : 'none';
+  document.getElementById('setaLista').textContent = listaAberta ? '▲' : '▼';
+}
+
+function atualizarEstilo(checkbox) {
+  const label = checkbox.parentElement;
+  if (checkbox.checked) {
+    label.classList.add('selecionado');
+  } else {
+    label.classList.remove('selecionado');
+  }
+}
+
+function confirmarSelecao() {
+  const checkboxes = document.querySelectorAll('#listaNomesContainer input[type="checkbox"]:checked');
+  const novosNomes = Array.from(checkboxes).map(cb => cb.value);
   
-  selecionados.push(nome);
+  // Adiciona sem duplicar
+  novosNomes.forEach(nome => {
+    if (!selecionados.includes(nome)) {
+      selecionados.push(nome);
+    }
+  });
+  
   atualizarListaSelecionados();
-  document.getElementById('caixaNomes').value = '';
-  carregarListaNomes();
+  alternarLista();
+  atualizarTextoBotao();
+}
+
+function atualizarTextoBotao() {
+  const btnTexto = document.getElementById('textoBotao');
+  if (selecionados.length === 0) {
+    btnTexto.textContent = 'Toque para escolher os participantes';
+  } else if (selecionados.length === 1) {
+    btnTexto.textContent = `1 participante selecionado`;
+  } else {
+    btnTexto.textContent = `${selecionados.length} participantes selecionados`;
+  }
 }
 
 function atualizarListaSelecionados() {
@@ -273,7 +335,7 @@ function atualizarListaSelecionados() {
     item.className = 'selecionado-item';
     item.innerHTML = `
       ${nome}
-      <span class="remover" onclick="removerParticipante('${nome}')">×</span>
+      <button type="button" class="remover" onclick="removerParticipante('${nome}')">×</button>
     `;
     container.appendChild(item);
   });
@@ -282,13 +344,29 @@ function atualizarListaSelecionados() {
 function removerParticipante(nome) {
   selecionados = selecionados.filter(n => n !== nome);
   atualizarListaSelecionados();
-  carregarListaNomes();
+  atualizarTextoBotao();
+  
+  // Atualiza o checkbox se a lista estiver aberta
+  const checkboxes = document.querySelectorAll('#listaNomesContainer input[type="checkbox"]');
+  checkboxes.forEach(cb => {
+    if (cb.value === nome) {
+      cb.checked = false;
+      atualizarEstilo(cb);
+    }
+  });
 }
 
 function limparTodos() {
   selecionados = [];
   atualizarListaSelecionados();
-  carregarListaNomes();
+  atualizarTextoBotao();
+  
+  // Desmarca todos os checkboxes
+  const checkboxes = document.querySelectorAll('#listaNomesContainer input[type="checkbox"]');
+  checkboxes.forEach(cb => {
+    cb.checked = false;
+    atualizarEstilo(cb);
+  });
 }
 
 function adicionarColaborador() {
@@ -340,7 +418,7 @@ function atualizarPreview(){
     div.className = 'foto-item';
     div.innerHTML = `
       <img src="${foto}" alt="Foto ${indice+1}">
-      <span class="remover" onclick="removerFoto(${indice})">×</span>
+      <button type="button" class="remover" onclick="removerFoto(${indice})">×</button>
     `;
     container.appendChild(div);
   });
@@ -475,7 +553,7 @@ function novoLancamento(){
   document.getElementById('previewFotos').innerHTML = '';
   selecionados = [];
   document.getElementById('listaSelecionados').innerHTML = '';
-  document.getElementById('caixaNomes').style.display = 'none';
+  document.getElementById('blocoSelecao').style.display = 'none';
   document.getElementById('avisoArea').style.display = 'block';
   document.getElementById('previaMsg').style.display = 'none';
   document.getElementById('sucessoPlanilha').style.display = 'none';
