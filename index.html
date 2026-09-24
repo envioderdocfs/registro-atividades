@@ -17,7 +17,6 @@ label {display:block; margin:12px 0 6px; font-weight:bold; color:#0055b8; font-s
 input, textarea, select {width:100%; padding:12px; border:2px solid #b3d1f0; border-radius:8px; font-size:16px; background:#fafcfe;}
 textarea {min-height:70px; resize:vertical;}
 
-/* Seleção múltipla estilo celular */
 .lista-selecao-multipla {border:2px solid #b3d1f0; border-radius:8px; background:#fafcfe; max-height:220px; overflow-y:auto; margin:8px 0;}
 .item-opcao {display:flex; align-items:center; gap:10px; padding:12px; border-bottom:1px solid #e0e8f0; cursor:pointer;}
 .item-opcao:last-child {border-bottom:none;}
@@ -121,6 +120,12 @@ button:hover {opacity:0.92;}
   <label>7. Apoio de Outras Áreas</label>
   <div class="apoio-area">
     <label class="apoio-opcao">
+      <input type="checkbox" id="apoioEletrica" onchange="mostrarApoio()"> Apoio da Elétrica
+    </label>
+    <div id="nomeEleArea" class="apoio-nome" style="display:none;">
+      <input type="text" id="nomeEle" placeholder="Nome da pessoa">
+    </div>
+    <label class="apoio-opcao">
       <input type="checkbox" id="apoioMecanica" onchange="mostrarApoio()"> Apoio da Mecânica
     </label>
     <div id="nomeMecArea" class="apoio-nome" style="display:none;">
@@ -137,7 +142,6 @@ button:hover {opacity:0.92;}
   <label>8. Participantes da Equipe *</label>
   <div id="avisoArea" class="aviso-selecao">← Selecione uma área acima para ver a lista de nomes</div>
   
-  <!-- Lista expansível estilo celular -->
   <div id="blocoSelecao" style="display:none;">
     <button type="button" class="btn-expandir" id="botaoLista" onclick="alternarLista()">
       <span id="textoBotao">Toque para escolher os participantes</span>
@@ -145,7 +149,6 @@ button:hover {opacity:0.92;}
     </button>
     
     <div id="listaNomesContainer" class="lista-selecao-multipla" style="display:none; margin-top:8px;">
-      <!-- Nomes gerados dinamicamente -->
     </div>
     
     <button type="button" class="btn-azul" style="margin:10px 0;" onclick="confirmarSelecao()">✅ Confirmar Seleção</button>
@@ -202,7 +205,6 @@ button:hover {opacity:0.92;}
   <button class="btn-principal" style="background:#ff9800; margin-top:15px; display:none;" id="btnNovo" onclick="novoLancamento()">NOVO REGISTRO</button>
 </div>
 
-<!-- Rodapé -->
 <div class="rodape">
   Desenvolvido por Cristiano Bastos
 </div>
@@ -214,7 +216,6 @@ const DATA_EXPIRACAO = new Date(2026, 11, 31);
 const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzPP__6N9M13LIMHcAOnGc8jraRiV50EIPGe2TDSzfQddLcikfCAYp6RPSSD9HrhUXr/exec";
 const LINK_GRUPO = "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi";
 
-// ✅ LISTA COMPLETA
 const equipes = {
   "Elétrica": [
     "Arlan", "Cristiano", "Juracy", "Rildo", "Steve",
@@ -262,6 +263,8 @@ function verificarExpiracao() {
 }
 
 function mostrarApoio() {
+  document.getElementById('nomeEleArea').style.display = 
+    document.getElementById('apoioEletrica').checked ? 'block' : 'none';
   document.getElementById('nomeMecArea').style.display = 
     document.getElementById('apoioMecanica').checked ? 'block' : 'none';
   document.getElementById('nomeCivArea').style.display = 
@@ -469,8 +472,10 @@ async function montarESalvar(){
   const desc = document.getElementById('desc').value.trim();
   const local = document.getElementById('local').value.trim();
   const data = document.getElementById('data').value;
+  const ele = document.getElementById('apoioEletrica').checked;
   const mec = document.getElementById('apoioMecanica').checked;
   const civ = document.getElementById('apoioCivil').checked;
+  const nomeEle = document.getElementById('nomeEle').value.trim();
   const nomeMec = document.getElementById('nomeMec').value.trim();
   const nomeCiv = document.getElementById('nomeCiv').value.trim();
   const status = document.getElementById('statusAtividade').value;
@@ -485,14 +490,11 @@ async function montarESalvar(){
   if(selecionados.length === 0){ alert('Selecione pelo menos um participante!'); return; }
   
   const dt = formatarData(data);
-  let textoApoio = 'Não houve apoio de outras áreas';
-  if (mec && civ) {
-    textoApoio = 'Apoio da Mecânica' + (nomeMec ? ': ' + nomeMec : '') + ' e da Civil' + (nomeCiv ? ': ' + nomeCiv : '');
-  } else if (mec) {
-    textoApoio = 'Apoio da Mecânica' + (nomeMec ? ': ' + nomeMec : '');
-  } else if (civ) {
-    textoApoio = 'Apoio da Civil' + (nomeCiv ? ': ' + nomeCiv : '');
-  }
+  let itensApoio = [];
+  if (ele) itensApoio.push('Apoio da Elétrica' + (nomeEle ? ': ' + nomeEle : ''));
+  if (mec) itensApoio.push('Apoio da Mecânica' + (nomeMec ? ': ' + nomeMec : ''));
+  if (civ) itensApoio.push('Apoio da Civil' + (nomeCiv ? ': ' + nomeCiv : ''));
+  const textoApoio = itensApoio.length > 0 ? itensApoio.join('\n') : 'Não houve apoio de outras áreas';
   
   const listaFormatada = selecionados.join('\n');
   const qtdFotos = fotosBase64.length;
@@ -526,7 +528,7 @@ Força Sul Consórcio`;
   
   const dados = {
     area, quem, descricao: desc, local, data: dt, apoio: textoApoio,
-    nomeMecanica: nomeMec || '-', nomeCivil: nomeCiv || '-',
+    nomeEletrica: nomeEle || '-', nomeMecanica: nomeMec || '-', nomeCivil: nomeCiv || '-',
     participantes: selecionados.join(', '), status,
     materiaisFaltantes: matFaltantes || '-', observacoes: obs || '-',
     fotos: fotosParaEnvio
@@ -557,10 +559,13 @@ function novoLancamento(){
   document.getElementById('desc').value = '';
   document.getElementById('local').value = '';
   document.getElementById('data').value = '';
+  document.getElementById('apoioEletrica').checked = false;
   document.getElementById('apoioMecanica').checked = false;
   document.getElementById('apoioCivil').checked = false;
+  document.getElementById('nomeEle').value = '';
   document.getElementById('nomeMec').value = '';
   document.getElementById('nomeCiv').value = '';
+  document.getElementById('nomeEleArea').style.display = 'none';
   document.getElementById('nomeMecArea').style.display = 'none';
   document.getElementById('nomeCivArea').style.display = 'none';
   document.getElementById('statusAtividade').value = 'Concluída';
