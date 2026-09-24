@@ -207,7 +207,7 @@ const DATA_EXPIRACAO = new Date(2026, 11, 31);
 const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzPP__6N9M13LIMHcAOnGc8jraRiV50EIPGe2TDSzfQddLcikfCAYp6RPSSD9HrhUXr/exec";
 const LINK_GRUPO = "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi";
 
-// ✅ LISTA CORRIGIDA
+// ✅ LISTA ATUALIZADA — Civil com nomes compostos mantidos
 const equipes = {
   "Elétrica": [
     "Arlan", "Cristiano", "Juracy", "Rildo", "Steve",
@@ -215,8 +215,21 @@ const equipes = {
     "Cleber", "Herberson", "Jaudecy", "Lázaro",
     "Maicon", "Matheus", "Rafael"
   ],
-  "Mecânica": ["Angre", "Felipe"],
-  "Civil": ["Gustavo"]
+  "Mecânica": [
+    "Amaro", "Anderson", "Cristiano", "Edmar", "Felipe",
+    "Filipe", "Fabricio", "Gabriel", "Ikaro", "Jairvânio",
+    "José", "Júlio", "Leandro", "Lydiogamy", "Maicon",
+    "Marcelo", "Márcio", "Nicolas", "Ramon", "Ryan",
+    "Tobias", "Ubirailson", "Valmecir", "Wadson", "Wesley"
+  ],
+  "Civil": [
+    "Antônio Marcos", "Dirley", "Edilson", "Eleomar",
+    "Fagner", "Ivan", "Jonathan", "José Francisco",
+    "José Leandro", "Joserlan", "Leonardo", "Magno",
+    "Manoel", "Marcelo de Jesus Moreno", "Marcelo de Jesus Santos",
+    "Marcelo dos Santos", "Marcos Fernando", "Maikam",
+    "Renan", "Renato", "Talger"
+  ]
 };
 
 const temporarios = {
@@ -303,7 +316,6 @@ function confirmarSelecao() {
   const checkboxes = document.querySelectorAll('#listaNomesContainer input[type="checkbox"]:checked');
   const novosNomes = Array.from(checkboxes).map(cb => cb.value);
   
-  // Adiciona sem duplicar
   novosNomes.forEach(nome => {
     if (!selecionados.includes(nome)) {
       selecionados.push(nome);
@@ -346,7 +358,6 @@ function removerParticipante(nome) {
   atualizarListaSelecionados();
   atualizarTextoBotao();
   
-  // Atualiza o checkbox se a lista estiver aberta
   const checkboxes = document.querySelectorAll('#listaNomesContainer input[type="checkbox"]');
   checkboxes.forEach(cb => {
     if (cb.value === nome) {
@@ -361,7 +372,6 @@ function limparTodos() {
   atualizarListaSelecionados();
   atualizarTextoBotao();
   
-  // Desmarca todos os checkboxes
   const checkboxes = document.querySelectorAll('#listaNomesContainer input[type="checkbox"]');
   checkboxes.forEach(cb => {
     cb.checked = false;
