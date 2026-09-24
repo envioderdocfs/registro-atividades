@@ -31,7 +31,8 @@ button:hover {opacity:0.92;}
 .btn-whatsapp {background:#25D366; color:white; margin-top:15px; display:none; box-shadow:0 3px 6px rgba(37,211,102,0.25);}
 .btn-foto {background:#4caf50; color:white; margin:8px 0;}
 .previa {background:#f0f6fc; border:1px solid #0055b8; padding:15px; border-radius:8px; margin-top:20px; white-space:pre-wrap; font-size:14px; line-height:1.6; display:none;}
-.sucesso {background:#e8f5e9; border-left:4px solid #2e7d32; padding:12px; margin-top:15px; border-radius:0 8px 8px 0; font-size:14px; color:#1b5e20; display:none;}
+.sucesso {background:#e8f5e9; border-left:4px solid #2e7d32; padding:10px 12px; margin-top:10px; border-radius:0 8px 8px 0; font-size:13px; color:#1b5e20; display:none;}
+.aviso-envio {background:#fff8e1; border-left:4px solid #ff9800; padding:10px 12px; margin-top:10px; border-radius:0 8px 8px 0; font-size:13px; color:#e65100; display:none;}
 .tela-expirada {background:#ffebee; border:2px solid #d32f2f; padding:30px 20px; border-radius:12px; text-align:center; margin-top:20px; display:none;}
 .tela-expirada h2 {color:#c62828; margin-bottom:20px; font-size:22px;}
 .tela-expirada p {color:#b71c1c; font-size:16px; line-height:1.8;}
@@ -139,17 +140,25 @@ button:hover {opacity:0.92;}
   <label>11. Observações Gerais</label>
   <textarea id="observacoes" placeholder="Detalhes, próximos passos..."></textarea>
   <button class="btn-principal" onclick="montarESalvar()">MONTAR E SALVAR</button>
+  
   <div id="previaMsg" class="previa">
 Mensagem pronta:
 ----------------------------------------
 <span id="textoMsg"></span>
   </div>
+  
   <button id="btnCopiar" class="btn-copiar" style="display:none;" onclick="copiarTexto()">📋 Copiar Mensagem</button>
   <div id="avisoCopiar" class="aviso-copiar" style="display:none;">
   ✅ Mensagem copiada! Abra o grupo e cole (Ctrl+V)
   </div>
-  <div id="sucessoPlanilha" class="sucesso">✅ Salvo na planilha com sucesso!</div>
+  
   <button class="btn-whatsapp" id="btnWpp" style="display:none;" onclick="enviarWpp()">💬 ENVIAR PARA O GRUPO</button>
+  
+  <div id="avisoEnviando" class="aviso-envio" style="display:none;">
+  ⏳ Enviando dados para a planilha... pode prosseguir enquanto carrega
+  </div>
+  <div id="sucessoPlanilha" class="sucesso">✅ Salvo na planilha com sucesso!</div>
+  
   <button class="btn-principal" style="background:#ff9800; margin-top:15px; display:none;" id="btnNovo" onclick="novoLancamento()">NOVO REGISTRO</button>
 </div>
 </div>
@@ -261,6 +270,22 @@ function copiarTexto(){
   });
 }
 
+async function enviarParaPlanilha(dados){
+  try {
+    const resposta = await fetch(URL_APPS_SCRIPT, {
+      method: 'POST', 
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(dados)
+    });
+    document.getElementById('avisoEnviando').style.display = 'none';
+    document.getElementById('sucessoPlanilha').style.display = 'block';
+  } catch (e) { 
+    document.getElementById('avisoEnviando').innerHTML = '⚠️ Erro ao salvar na planilha: ' + e.message;
+    document.getElementById('avisoEnviando').style.display = 'block';
+  }
+}
+
 async function montarESalvar(){
   const areaSel = document.querySelector('input[name="area"]:checked');
   const area = areaSel ? areaSel.value : '';
@@ -298,6 +323,7 @@ async function montarESalvar(){
   const qtdFotos = fotosBase64.length;
   const textoFotos = qtdFotos > 0 ? `Fotos anexadas: ${qtdFotos} foto(s)` : 'Nenhuma foto selecionada';
   
+  // ✅ MENSAGEM MONTADA E EXIBIDA NA HORA
   mensagemFinal = `REGISTRO DE ATIVIDADE - ${area.toUpperCase()}
 Força Sul Consórcio
 Enviado por: ${quem}
@@ -320,9 +346,12 @@ Força Sul Consórcio`;
 
   document.getElementById('textoMsg').innerText = mensagemFinal;
   document.getElementById('previaMsg').style.display = 'block';
+  document.getElementById('btnCopiar').style.display = 'block';
+  document.getElementById('btnWpp').style.display = 'block';
+  document.getElementById('btnNovo').style.display = 'block';
   
+  // Prepara os dados
   const fotosParaEnvio = qtdFotos > 0 ? fotosBase64.join(' | ') : 'Sem fotos';
-  
   const dados = {
     area, quem, descricao: desc, local, data: dt, apoio: textoApoio,
     nomeMecanica: nomeMec || '-', nomeCivil: nomeCiv || '-',
@@ -331,19 +360,10 @@ Força Sul Consórcio`;
     fotos: fotosParaEnvio
   };
   
-  try {
-    await fetch(URL_APPS_SCRIPT, {
-      method: 'POST', mode: 'no-cors',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(dados)
-    });
-    document.getElementById('sucessoPlanilha').style.display = 'block';
-    document.getElementById('btnCopiar').style.display = 'block';
-    document.getElementById('btnWpp').style.display = 'block';
-    document.getElementById('btnNovo').style.display = 'block';
-  } catch (e) { 
-    alert('Erro: ' + e.message); 
-  }
+  // ⚡ PLANILHA VAI EM SEGUNDO PLANO — NÃO TRAVA VOCÊ
+  document.getElementById('avisoEnviando').style.display = 'block';
+  document.getElementById('sucessoPlanilha').style.display = 'none';
+  enviarParaPlanilha(dados); // Sem await, segue imediatamente
 }
 
 function enviarWpp(){
@@ -369,6 +389,7 @@ function novoLancamento(){
   fotosBase64 = [];
   document.getElementById('previewFotos').innerHTML = '';
   document.getElementById('previaMsg').style.display = 'none';
+  document.getElementById('avisoEnviando').style.display = 'none';
   document.getElementById('sucessoPlanilha').style.display = 'none';
   document.getElementById('btnCopiar').style.display = 'none';
   document.getElementById('avisoCopiar').style.display = 'none';
