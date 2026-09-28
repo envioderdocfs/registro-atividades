@@ -7,73 +7,7 @@
 <style>
 * {margin:0; padding:0; box-sizing:border-box; font-family:sans-serif;}
 
-/* TELA DE ABERTURA — CORRIGIDA: sem animação pesada */
-.tela-loading {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:linear-gradient(135deg, #0055b8 0%, #0077ed 100%);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-  transition:opacity 0.5s ease, visibility 0.5s ease;
-}
-.tela-loading.ocultar {
-  opacity:0;
-  visibility:hidden;
-}
-.logo-loading {
-  width:180px;
-  height:180px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:25px;
-}
-.logo-loading img {
-  width:150px;
-  height:auto;
-  border-radius:12px;
-  box-shadow:0 4px 20px rgba(255,255,255,0.3);
-}
-.texto-loading {
-  color:white;
-  font-size:22px;
-  font-weight:bold;
-  margin-bottom:8px;
-  text-shadow:0 2px 4px rgba(0,0,0,0.2);
-}
-.subtexto-loading {
-  color:#b3d7ff;
-  font-size:15px;
-  margin-bottom:25px;
-}
-.barra-carregamento {
-  width:200px;
-  height:5px;
-  background:rgba(255,255,255,0.25);
-  border-radius:3px;
-  overflow:hidden;
-}
-.preenchimento {
-  height:100%;
-  background:white;
-  border-radius:3px;
-  width:0%;
-  animation: carregar 2s ease-in-out forwards;
-}
-@keyframes carregar {
-  0% { width:0%; }
-  100% { width:100%; }
-}
-
-/* ESTILOS DO APLICATIVO */
 body {background:#eaf2fa; padding:15px; max-width:520px; margin:0 auto; padding-bottom:80px;}
-.logo-container {text-align:center; margin-bottom:15px; padding:15px 10px; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,85,184,0.1); min-height:120px; display:flex; align-items:center; justify-content:center;}
-.logo-img {max-width:200px; width:100%; height:auto;}
-.logo-texto {font-size:22px; font-weight:bold; color:#0055b8; padding:15px 10px; text-align:center; display:none;}
 h1 {color:#0055b8; text-align:center; margin-bottom:15px; font-size:20px;}
 h3 {color:#0055b8; font-size:16px; margin:15px 0 8px;}
 .aviso {background:#e6f0fa; border-left:4px solid #0055b8; padding:12px; margin-bottom:15px; border-radius:0 8px 8px 0; font-size:14px; color:#004494;}
@@ -113,8 +47,6 @@ button:hover {opacity:0.92;}
 .tela-expirada h2 {color:#c62828; margin-bottom:20px; font-size:22px;}
 .tela-expirada p {color:#b71c1c; font-size:16px; line-height:1.8;}
 .tela-expirada .contato {font-weight:bold; margin-top:10px; font-size:17px;}
-.conteudo-app {display:block; opacity:0; transition:opacity 0.4s ease;}
-.conteudo-app.visivel {opacity:1;}
 .adicionar-area {background:#f9fbe7; border:2px solid #cddc39; padding:15px; border-radius:8px; margin:15px 0;}
 .adicionar-linha {display:flex; gap:8px; align-items:center;}
 .adicionar-linha input {flex:1; margin:0;}
@@ -151,21 +83,6 @@ button:hover {opacity:0.92;}
 </head>
 <body>
 
-<!-- TELA DE ABERTURA — CORRIGIDA: sem rotação -->
-<div id="telaLoading" class="tela-loading">
-  <div class="logo-loading">
-    <img src="logo-forca-sul.jpg" alt="Força Sul Consórcio" id="logoAbertura">
-  </div>
-  <h1 class="texto-loading">Força Sul Consórcio</h1>
-  <p class="subtexto-loading">Sistema de Registro de Atividades</p>
-  <div class="barra-carregamento">
-    <div class="preenchimento"></div>
-  </div>
-</div>
-
-<!-- CONTEÚDO PRINCIPAL -->
-<div id="conteudoApp" class="conteudo-app">
-
 <div id="telaExpirada" class="tela-expirada">
   <h2 id="textoExpirado">Sistema Expirado</h2>
   <p id="textoExpiradoMensagem">Para continuar com a utilização, entre em contato com o Desenvolvedor do Aplicativo.</p>
@@ -173,22 +90,6 @@ button:hover {opacity:0.92;}
 </div>
 
 <div id="formularioApp">
-<div class="logo-container">
-  <img src="logo-forca-sul.jpg" alt="Força Sul Consórcio" class="logo-img" id="minhaLogo">
-  <div id="textoFallback" class="logo-texto">FORÇA SUL<br>Consórcio</div>
-</div>
-<script>
-  const imgLogo = document.getElementById('minhaLogo');
-  imgLogo.onerror = function() {
-    this.style.display = 'none';
-    document.getElementById('textoFallback').style.display = 'block';
-  };
-  const logoAbertura = document.getElementById('logoAbertura');
-  logoAbertura.onerror = function() {
-    this.parentElement.style.display = 'none';
-  };
-</script>
-
 <h1>Registro de Atividades — RDO</h1>
 <div class="aviso" id="avisoPrincipal">Selecione a área → marque os nomes na lista</div>
 <div class="card">
@@ -310,7 +211,6 @@ button:hover {opacity:0.92;}
   <button class="btn-principal" style="background:#ff9800; margin-top:15px; display:none;" id="btnNovo" onclick="novoLancamento()">NOVO REGISTRO</button>
 </div>
 
-<!-- ÁREA DO ADMINISTRADOR -->
 <button class="btn-admin" onclick="abrirAcessoAdmin()">🔐 Área do Administrador do Sistema</button>
 
 <div id="painelSenha" class="card" style="display:none; margin-top:15px;">
@@ -415,26 +315,11 @@ button:hover {opacity:0.92;}
 </div>
 
 </div>
-</div>
 
 <script>
 const SENHA_ADMIN = "5863";
 const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzPP__6N9M13LIMHcAOnGc8jraRiV50EIPGe2TDSzfQddLcikfCAYp6RPSSD9HrhUXr/exec";
 
-// TELA DE ABERTURA — CORRIGIDA: mais rápida e leve
-function abrirAplicativo() {
-  const telaLoading = document.getElementById('telaLoading');
-  const conteudoApp = document.getElementById('conteudoApp');
-  telaLoading.classList.add('ocultar');
-  setTimeout(() => {
-    conteudoApp.classList.add('visivel');
-    telaLoading.style.display = 'none';
-    verificarExpiracao();
-  }, 400);
-}
-setTimeout(abrirAplicativo, 2000);
-
-// CARREGAR CONFIGURAÇÕES
 function carregarConfiguracoes() {
   const salvas = localStorage.getItem('configAdmin');
   if (salvas) try { return JSON.parse(salvas); } catch(e) {}
@@ -447,7 +332,7 @@ function carregarConfiguracoes() {
     },
     equipes: {
       "Elétrica": ["Arlan", "Cristiano", "Juracy", "Rildo", "Steve", "Chrystian", "Elias", "Jackson", "Marcelo", "Cleber", "Herberson", "Jaudecy", "Lázaro", "Maicon", "Matheus", "Rafael"],
-      "Mecânica": ["Amaro", "Anderson", "Cristiano", "Edmar", "Felipe", "Filipe", "Fabricio", "Gabriel", "Ikaro", "Jairvânio", "José", "Júlio", "Leandro", "Lydiogamy", "Maicon", "Marcelo", "Márcio", "Nicolas", "Ramon", "Ryan", "Tobias", "Ubirailson", "Valmecir", "Wadson", "Wesley"],
+      "Mecânica": ["Amaro", "Anderson", "Cristiano", "Edmar", "Felipe", "Filipe", "Fabricio", "Gabriel", "Ikaro", "Jairvânio", "José Nilton", "Júlio", "Leandro", "Lydiogamy", "Maicon Silva", "Marcelo", "Márcio", "Nicolas", "Ramon", "Ryan", "Tobias", "Ubirailson", "Valmecir", "Wadson", "Wesley"],
       "Civil": ["Antônio Marcos", "Dirley", "Edilson", "Eleomar", "Fagner", "Ivan", "Jonathan", "José Francisco", "José Leandro", "Joserlan", "Leonardo", "Magno", "Manoel", "Marcelo de Jesus Moreno", "Marcelo de Jesus Santos", "Marcelo dos Santos", "Marcos Fernando", "Maikam", "Renan", "Renato", "Talger"]
     },
     avisos: {
@@ -486,8 +371,8 @@ function verificarExpiracao() {
   aplicarAvisos();
   return true;
 }
+verificarExpiracao();
 
-// FUNÇÕES ADMIN
 function abrirAcessoAdmin() {
   document.getElementById('painelSenha').style.display = 'block';
   document.getElementById('senhaAdmin').value = '';
@@ -564,7 +449,6 @@ function salvarTodasConfig(){
   setTimeout(()=>document.getElementById('avisoSalvo').style.display='none',4000);
 }
 
-// FUNÇÕES DO FORMULÁRIO
 function mostrarApoio(){
   document.getElementById('nomeEleArea').style.display = document.getElementById('apoioEletrica').checked?'block':'none';
   document.getElementById('nomeMecArea').style.display = document.getElementById('apoioMecanica').checked?'block':'none';
@@ -757,4 +641,37 @@ function novoLancamento(){
   document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
   document.getElementById('quemEnvia').value = '';
   document.getElementById('desc').value = '';
-  document.getElementById('local').
+  document.getElementById('local').value = '';
+  document.getElementById('data').value = '';
+  document.getElementById('apoioEletrica').checked = false;
+  document.getElementById('apoioMecanica').checked = false;
+  document.getElementById('apoioCivil').checked = false;
+  document.getElementById('nomeEle').value = '';
+  document.getElementById('nomeMec').value = '';
+  document.getElementById('nomeCiv').value = '';
+  document.getElementById('nomeEleArea').style.display = 'none';
+  document.getElementById('nomeMecArea').style.display = 'none';
+  document.getElementById('nomeCivArea').style.display = 'none';
+  document.getElementById('statusAtividade').value = 'Concluída';
+  document.getElementById('materiaisFaltantes').value = '';
+  document.getElementById('observacoes').value = '';
+  document.getElementById('inputFotos').value = '';
+  fotosBase64 = [];
+  document.getElementById('previewFotos').innerHTML = '';
+  selecionados = [];
+  document.getElementById('listaSelecionados').innerHTML = '';
+  document.getElementById('blocoSelecao').style.display = 'none';
+  document.getElementById('avisoArea').style.display = 'block';
+  document.getElementById('previaMsg').style.display = 'none';
+  document.getElementById('sucessoPlanilha').style.display = 'none';
+  document.getElementById('btnCopiar').style.display = 'none';
+  document.getElementById('avisoCopiar').style.display = 'none';
+  document.getElementById('btnWpp').style.display = 'none';
+  document.getElementById('btnNovo').style.display = 'none';
+  document.getElementById('textoBotao').textContent = 'Toque para escolher os participantes';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
