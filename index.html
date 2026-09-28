@@ -420,13 +420,13 @@ function carregarConfiguracoes() {
     senhaAdmin: "5863",
     dataExpiracao: new Date(2026, 11, 31).toISOString().split('T')[0],
     links: {
-      "Elétrica": "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi",
-      "Mecânica": "https://chat.whatsapp.com/GpQFU5Ut97t98knUGBA2AY",
-      "Civil": "https://chat.whatsapp.com/BfTNOZuqUL47VaFdjvSjCp"
+      "Elétrica": "",
+      "Mecânica": "",
+      "Civil": ""
     },
     equipes: {
       "Elétrica": ["Arlan", "Cristiano", "Juracy", "Rildo", "Steve", "Chrystian", "Elias", "Jackson", "Marcelo", "Cleber", "Herberson", "Jaudecy", "Lázaro", "Maicon", "Matheus", "Rafael"],
-      "Mecânica": ["Amaro", "Anderson", "Cristiano", "Edmar", "Felipe", "Filipe", "Fabricio", "Gabriel", "Ikaro", "Jairvânio", "José Nilton", "Júlio", "Leandro", "Lydiogamy", "Maicon Silva", "Marcelo", "Márcio", "Nicolas", "Ramon", "Ryan", "Tobias", "Ubirailson", "Valmecir", "Wadson", "Wesley"],
+      "Mecânica": ["Amaro", "Anderson", "Cristiano Taylor", "Edmar", "Felipe", "Filipe", "Fabricio", "Gabriel", "Ikaro", "Jairvânio", "José Nilton", "Júlio", "Leandro", "Lydiogamy", "Maicon Silva", "Marcelo", "Márcio", "Nicolas", "Ramon", "Ryan", "Tobias", "Ubirailson", "Valmecir", "Wadson", "Wesley"],
       "Civil": ["Antônio Marcos", "Dirley", "Edilson", "Eleomar", "Fagner", "Ivan", "Jonathan", "José Francisco", "José Leandro", "Joserlan", "Leonardo", "Magno", "Manoel", "Marcelo de Jesus Moreno", "Marcelo de Jesus Santos", "Marcelo dos Santos", "Marcos Fernando", "Maikam", "Renan", "Renato", "Talger"]
     },
     avisos: {
@@ -780,6 +780,7 @@ function carregarListaNomes(){
     div.innerHTML = `
       <input type="checkbox" id="chk_${nome.replace(/\s/g,'_')}" ${selecionados.includes(nome)?'checked':''} 
       onchange="toggleNome('${nome.replace(/'/g,"\\'")}')">
+      <label for="chk_${nome.replace(/\s/g,'_')}">${nome}</label>
     `;
     container.appendChild(div);
   });
@@ -890,7 +891,17 @@ async function redimensionarEConverter(arquivo) {
 
 function removerFoto(indice) {
   fotosBase64.splice(indice, 1);
-  processarFotos(fotosBase64.map(f => f.dados).map((_,i) => new File([], fotosBase64[i].nome, {type:'image/jpeg'})));
+  const preview = document.getElementById('previewFotos');
+  preview.innerHTML = '';
+  fotosBase64.forEach((foto, i) => {
+    const div = document.createElement('div');
+    div.className = 'foto-item';
+    div.innerHTML = `
+      <img src="${foto.dados}" alt="${foto.nome}">
+      <button class="remover" onclick="removerFoto(${i})">×</button>
+    `;
+    preview.appendChild(div);
+  });
 }
 
 function coletarValoresFormulario() {
@@ -947,7 +958,6 @@ ${dados.camposExtras ? `📌 Dados adicionais: ${dados.camposExtras}` : ''}
 async function montarESalvar() {
   const dados = coletarValoresFormulario();
   
-  // Validação
   if (!dados.area) { alert('Selecione a Área Responsável!'); return; }
   if (!dados.quemEnvia) { alert('Informe seu Nome!'); return; }
   if (!dados.descricao) { alert('Preencha a Descrição!'); return; }
@@ -957,12 +967,10 @@ async function montarESalvar() {
 
   mensagemFinal = montarMensagem(dados);
   
-  // Exibe prévia e botão de cópia ANTES de enviar à planilha
   document.getElementById('textoMsg').textContent = mensagemFinal;
   document.getElementById('previaMsg').style.display = 'block';
   document.getElementById('btnCopiar').style.display = 'inline-block';
   
-  // Prepara dados para envio
   const payload = {
     ...dados,
     fotos: fotosBase64.map(f => f.dados)
@@ -993,7 +1001,7 @@ function copiarTexto() {
 function enviarWpp() {
   const area = document.querySelector('input[name="area"]:checked')?.value;
   const link = LINK_GRUPOS[area] || '';
-  if (!link) { alert('Link do grupo não configurado para esta área!'); return; }
+  if (!link) { alert('Link do grupo não configurado para esta área! Acesse a Área do Administrador para cadastrar.'); return; }
   window.open(link, '_blank');
 }
 
