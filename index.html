@@ -819,7 +819,7 @@ async function montarEEnviar() {
   if (temporario) {
     participantesTexto += (participantesTexto ? ', ' : '') + temporario + ' (Temporário)';
   }
-  
+
   let extras = '';
   if (cfg.camposExtras.length > 0) {
     extras = cfg.camposExtras.map((rotulo, i) => {
@@ -828,6 +828,77 @@ async function montarEEnviar() {
     }).filter(Boolean).join('\n');
   }
 
+  mensagemFinal = `REGISTRO DE ATIVIDADE — ${area}
+Data/Hora: ${new Date().toLocaleString('pt-BR')}
+Responsável: ${quem}
+Local: ${local}
+Data Atividade: ${data}
+Descrição:
+${desc}
+Participantes:
+${participantesTexto}
+${apoio.length ? 'Apoio:\n' + apoio.join('\n') : ''}
+Status: ${document.getElementById('status').value}
+Materiais Pendentes:
+${document.getElementById('materiais').value.trim() || 'Nenhum'}
+Observações:
+${document.getElementById('obs').value.trim() || 'Nenhuma'}
+${extras ? 'Informações Adicionais:\n' + extras : ''}
+Fotos anexadas: ${fotos.length}`;
+
+  document.getElementById('textoMensagem').textContent = mensagemFinal;
+  document.getElementById('previa').style.display = 'block';
+  document.getElementById('btnCopiar').style.display = 'inline-block';
+
+  isEnviando = true;
+  const btnEnviar = document.getElementById('btnEnviar');
+  btnEnviar.disabled = true;
+  btnEnviar.classList.add('carregando');
+
+  try {
+    // ✅ CORREÇÃO: Fotos convertidas para STRING
+    const fotosTexto = fotos.join('||');
+
+    const dadosParaEnviar = {
+      dataHora: new Date().toLocaleString('pt-BR'),
+      area: area,
+      quemEnvia: quem,
+      descricao: desc,
+      local: local,
+      dataAtividade: data,
+      apoio: apoio.join(' | '),
+      participantes: participantesTexto,
+      status: document.getElementById('status').value,
+      materiais: document.getElementById('materiais').value.trim() || 'Nenhum',
+      observacoes: document.getElementById('obs').value.trim() || 'Nenhuma',
+      fotosQtd: fotos.length,
+      fotos: fotosTexto, // ✅ Agora é TEXTO
+      temporario: temporario || '',
+      camposExtras: extras || ''
+    };
+
+    console.log('Dados enviados:', dadosParaEnviar);
+
+    const resposta = await fetch(URL_SCRIPT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dadosParaEnviar)
+    });
+
+    document.getElementById('sucessoPlanilha').style.display = 'block';
+    document.getElementById('btnWpp').style.display = 'inline-block';
+    document.getElementById('btnNovo').style.display = 'inline-block';
+
+  } catch (erro) {
+    console.error('Erro completo:', erro);
+    alert(`Erro ao salvar: ${erro.message || 'Verifique a conexão'}`);
+  } finally {
+    isEnviando = false;
+    btnEnviar.disabled = false;
+    btnEnviar.classList.remove('carregando');
+  }
+}
   mensagemFinal = `REGISTRO DE ATIVIDADE — ${area}
 Data/Hora: ${new Date().toLocaleString('pt-BR')}
 Responsável: ${quem}
