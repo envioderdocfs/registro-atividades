@@ -667,31 +667,46 @@ function redimensionar(arq) {
 // ========================================
 // MONTAR E ENVIAR
 // ========================================
-function montarEEnviar() {
-  const area = document.querySelector('input[name="area"]:checked')?.value;
-  const quem = document.getElementById('quemEnvia').value.trim();
-  const desc = document.getElementById('desc').value.trim();
-  const local = document.getElementById('local').value.trim();
-  const data = document.getElementById('dataAtividade').value;
-  const temporario = document.getElementById('participanteTemporario').value.trim();
+    // Envio CORRIGIDO — sem no-cors
+    try {
+      const dadosParaEnviar = {
+        dataHora: new Date().toLocaleString('pt-BR'),
+        area: area,
+        quemEnvia: quem,
+        descricao: desc,
+        local: local,
+        dataAtividade: data,
+        apoio: apoio.join(' | '),
+        participantes: participantesTexto,
+        status: document.getElementById('status').value,
+        materiais: document.getElementById('materiais').value.trim(),
+        observacoes: document.getElementById('obs').value.trim(),
+        fotosQtd: fotosBase64.length,
+        fotos: fotosBase64.join('||')
+      };
 
-  if (!area) return alert('Selecione a Área Responsável!');
-  if (!quem) return alert('Informe seu Nome!');
-  if (!desc) return alert('Preencha a Descrição!');
-  if (!local) return alert('Informe o Local!');
-  if (!data) return alert('Informe a Data da Atividade!');
-  if (!selecionados.length && !temporario) return alert('Selecione os Participantes ou informe o Temporário!');
+      const resposta = await fetch(URL_SCRIPT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dadosParaEnviar)
+        // ↓ REMOVA o mode: 'no-cors' ↓
+      });
 
-  const apoio = [];
-  if (document.getElementById('apoioEle').checked) apoio.push(`Apoio Elétrica: ${document.getElementById('nomeEle').value || 'não informado'}`);
-  if (document.getElementById('apoioMec').checked) apoio.push(`Apoio Mecânica: ${document.getElementById('nomeMec').value || 'não informado'}`);
-  if (document.getElementById('apoioCiv').checked) apoio.push(`Apoio Civil: ${document.getElementById('nomeCiv').value || 'não informado'}`);
-
-  let participantesTexto = selecionados.join(', ');
-  if (temporario) {
-    participantesTexto += (participantesTexto ? ', ' : '') + temporario + ' (Temporário)';
-  }
-
+      const resultado = await resposta.json();
+      
+      if (resultado.sucesso) {
+        document.getElementById('sucessoPlanilha').style.display = 'block';
+        document.getElementById('btnWpp').style.display = 'inline-block';
+        document.getElementById('btnNovo').style.display = 'inline-block';
+        alert("✅ Salvo com sucesso!");
+      } else {
+        alert("Erro: " + (resultado.erro || "Verifique se a aba se chama 'Registros'"));
+      }
+      
+    } catch (erro) {
+      alert("❌ Falha: " + erro.message + "\n\nConfirme o link do script e a implantação!");
+    }
+  
   let extras = '';
   if (cfg.camposExtras.length > 0) {
     extras = cfg.camposExtras.map((_, i) => {
