@@ -14,7 +14,9 @@ h1 {color:#0055b8; text-align:center; margin-bottom:15px; font-size:20px;}
 .card {background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 10px rgba(0,85,184,0.1);}
 label {display:block; margin:12px 0 6px; font-weight:bold; color:#0055b8; font-size:15px; text-align:left;}
 input, textarea, select {width:100%; padding:12px; border:2px solid #b3d1f0; border-radius:8px; font-size:16px; background:#fafcfe; text-align:left;}
-button {padding:14px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer; margin-top:10px; width:100%;}
+button {padding:14px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer; margin-top:10px; width:100%; transition:opacity 0.2s;}
+button:hover {opacity:0.92;}
+button:disabled {opacity:0.6; cursor:not-allowed;}
 .btn-principal {background:#0055b8; color:white;}
 .btn-admin {background:#6A1B9A; color:white; padding:12px; font-size:15px; width:100%; margin-top:20px;}
 .btn-senha {background:#6A1B9A; color:white; padding:10px; font-size:15px;}
@@ -65,14 +67,33 @@ button {padding:14px; border:none; border-radius:8px; font-size:17px; font-weigh
 .linha-dupla > div {flex:1;}
 h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
 .aviso-area {text-align:left;}
+.carregando {opacity:0.7; pointer-events:none; position:relative;}
+.carregando::after {content:"Salvando..."; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.9); border-radius:8px; font-weight:bold; color:#0055b8;}
 </style>
 </head>
 <body>
-
 <div class="logo-topo">
-  <img src="https://i.imgur.com/9ZbXqLg.png" alt="Força Sul Consórcio" onerror="this.src='https://via.placeholder.com/220x80/eaf2fa/0055b8?text=FORÇA+SUL+CONSÓRCIO'; this.onerror=null;">
+  <img 
+    src="logo-forca-sul.jpg" 
+    alt="Força Sul Consórcio"
+    style="max-width: 220px; height: auto; display: inline-block;"
+    onerror="
+      console.log('Imagem local não encontrada — verificando...');
+      // Tenta sem acento e com diferentes nomes
+      if (this.src.includes('logo-forca-sul.jpg')) {
+        this.src='Logo-Forca-Sul.jpg';
+      } else if (this.src.includes('Logo-Forca-Sul.jpg')) {
+        this.src='logo.jpg';
+      } else {
+        this.src='https://i.imgur.com/KzRqGYc.png';
+        this.onerror=function(){
+          this.src='https://via.placeholder.com/220x80/eaf2fa/0055b8?text=FORCA+SUL+CONSORCIO';
+          this.onerror=null;
+        };
+      }
+    "
+  >
 </div>
-
 <h1>Registro de Atividades — RDO</h1>
 
 <!-- TELA DE EXPIRAÇÃO -->
@@ -88,7 +109,6 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
 
 <div id="formApp">
   <div class="aviso" id="avisoPrincipal">Selecione a Área Responsável e marque os nomes na lista</div>
-
   <div class="card">
     <label>1. Área Responsável *</label>
     <div class="area-selecao">
@@ -172,15 +192,16 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
     <label>11. Observações</label>
     <textarea id="obs" placeholder="Informações adicionais..."></textarea>
 
-    <button class="btn-principal" onclick="montarEEnviar()">Montar e Salvar</button>
+    <button id="btnEnviar" class="btn-principal" onclick="montarEEnviar()">Montar e Salvar</button>
 
     <div id="previa" class="previa">
       <strong>Mensagem pronta:</strong><br><br>
       <span id="textoMensagem"></span>
     </div>
+
     <button id="btnCopiar" class="btn-azul" style="display:none; margin-top:10px;" onclick="copiarMensagem()">Copiar Mensagem</button>
     <div id="avisoCopiado" style="display:none; background:#e3f2fd; padding:10px; margin-top:8px; border-radius:6px;">Copiado! Cole no WhatsApp</div>
-    <div id="sucessoPlanilha" class="sucesso">Dados salvos na planilha com sucesso!</div>
+    <div id="sucessoPlanilha" class="sucesso">✅ Dados salvos na planilha com sucesso!</div>
     <button id="btnWpp" class="btn-whatsapp" style="display:none;" onclick="abrirWpp()">Enviar para o Grupo</button>
     <button id="btnNovo" class="btn-principal" style="display:none; background:#ff9800; margin-top:15px;" onclick="novoRegistro()">Novo Registro</button>
   </div>
@@ -282,7 +303,7 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
     <div class="aba-conteudo" id="aba5">
       <h4>Senha e Administradores</h4>
       <label>Alterar Senha de Administrador</label>
-      <input type="password" id="novaSenhaAdmin" placeholder="Nova senha">
+      <input type="password" id="novaSenhaAdmin" placeholder="Nova senha (mínimo 4 dígitos)">
       <input type="password" id="confirmaSenhaAdmin" placeholder="Repetir senha" style="margin-top:8px;">
       <button class="btn-verde" onclick="alterarSenha()">Alterar Senha</button>
       
@@ -295,7 +316,7 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
       <p class="aviso-pequeno">A senha principal continua sendo a mesma para todos</p>
     </div>
 
-    <p id="salvoOk" class="sucesso-salvo">Configurações salvas!</p>
+    <p id="salvoOk" class="sucesso-salvo">✅ Configurações salvas!</p>
     <div style="display:flex; gap:10px; margin-top:20px;">
       <button class="btn-verde" style="flex:1;" onclick="salvarConfig()">Salvar Tudo</button>
       <button class="btn-cancelar" onclick="fecharAdmin()">Sair</button>
@@ -306,7 +327,13 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
 </div>
 
 <script>
+// ========================================
+// CONSTANTES E CONFIGURAÇÕES
+// ========================================
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzPP__6N9M13LIMHcAOnGc8jraRiV50EIPGe2TDSzfQddLcikfCAYp6RPSSD9HrhUXr/exec";
+const MAX_FOTO_DIM = 1000;
+const FOTO_QUALIDADE = 0.75;
+const SENHA_MIN_TAM = 4;
 
 // DADOS INICIAIS PADRÃO — SENHA PRINCIPAL: 5863
 const PADRAO = {
@@ -326,29 +353,62 @@ const PADRAO = {
   administradores: ["Cristiano Bastos"]
 };
 
+// ESTADO
 let cfg = {};
 let selecionados = [];
 let listaAberta = false;
 let fotos = [];
 let mensagemFinal = "";
+let isEnviando = false;
 
 // ========================================
-// INICIALIZAÇÃO
+// FUNÇÕES AUXILIARES
 // ========================================
-function iniciar() {
-  localStorage.clear();
-  cfg = JSON.parse(JSON.stringify(PADRAO));
+function escaparHtml(texto) {
+  const div = document.createElement('div');
+  div.textContent = texto;
+  return div.innerHTML;
+}
+
+function carregarCfg() {
+  try {
+    const salvo = localStorage.getItem('configRDO');
+    if (salvo) {
+      cfg = { ...PADRAO, ...JSON.parse(salvo) };
+    } else {
+      cfg = JSON.parse(JSON.stringify(PADRAO));
+    }
+  } catch {
+    cfg = JSON.parse(JSON.stringify(PADRAO));
+  }
   salvarCfg();
-  verificarExpiracao();
 }
 
 function salvarCfg() {
   localStorage.setItem('configRDO', JSON.stringify(cfg));
 }
 
+function definirDataMaxima() {
+  const hoje = new Date().toISOString().split('T')[0];
+  document.getElementById('dataAtividade').setAttribute('max', hoje);
+}
+
+// ========================================
+// INICIALIZAÇÃO
+// ========================================
+function iniciar() {
+  carregarCfg();
+  definirDataMaxima();
+  verificarExpiracao();
+}
+
+// ========================================
+// CONTROLE DE EXPIRAÇÃO
+// ========================================
 function verificarExpiracao() {
   const hoje = new Date(); hoje.setHours(0,0,0,0);
   const exp = new Date(cfg.dataExpiracao); exp.setHours(0,0,0,0);
+  
   if (hoje > exp) {
     document.getElementById('telaExpirada').style.display = 'block';
     document.getElementById('formApp').style.display = 'none';
@@ -374,7 +434,7 @@ function verificarAcessoExpirado() {
 }
 
 // ========================================
-// ACESSO — ÁREA ADMIN
+// ACESSO — ÁREA ADMINISTRATIVA
 // ========================================
 function abrirSenha() {
   document.getElementById('painelSenha').style.display = 'block';
@@ -385,6 +445,7 @@ function abrirSenha() {
 
 function fecharSenha() {
   document.getElementById('painelSenha').style.display = 'none';
+  document.getElementById('senhaAdmin').value = '';
 }
 
 function verificarSenha() {
@@ -419,25 +480,29 @@ function fecharAdmin() {
   document.getElementById('painelAdmin').style.display = 'none';
   document.getElementById('novaSenhaAdmin').value = '';
   document.getElementById('confirmaSenhaAdmin').value = '';
+  document.getElementById('senhaAdmin').value = '';
   verificarExpiracao();
 }
 
 function trocarAba(n) {
-  document.querySelectorAll('.aba-btn').forEach((b,i) => b.classList.toggle('ativa', i===n));
-  document.querySelectorAll('.aba-conteudo').forEach((c,i) => c.classList.toggle('ativa', i===n));
+  document.querySelectorAll('.aba-btn').forEach((b, i) => b.classList.toggle('ativa', i === n));
+  document.querySelectorAll('.aba-conteudo').forEach((c, i) => c.classList.toggle('ativa', i === n));
 }
 
 // ========================================
 // GERENCIAMENTO DE EQUIPES
 // ========================================
 function carregarListaEquipe(area) {
-  const div = document.getElementById(`lista${area === 'Elétrica' ? 'Ele' : area === 'Mecânica' ? 'Mec' : 'Civ'}`);
+  const mapa = { Elétrica: 'Ele', Mecânica: 'Mec', Civil: 'Civ' };
+  const div = document.getElementById(`lista${mapa[area]}`);
   div.innerHTML = '';
-  cfg.equipes[area].sort((a,b)=>a.localeCompare(b,'pt-BR')).forEach((nome, idx) => {
+  
+  cfg.equipes[area].sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach((nome, idx) => {
+    const nomeSeguro = escaparHtml(nome);
     const item = document.createElement('div');
     item.className = 'nome-item-admin';
     item.innerHTML = `
-      <span>${nome}</span>
+      <span>${nomeSeguro}</span>
       <div style="display:flex; gap:4px;">
         <button class="btn-azul" style="padding:4px 8px; font-size:12px; width:auto;" onclick="editarNome('${area}',${idx})">Editar</button>
         <button class="btn-vermelho" style="padding:4px 8px; font-size:12px; width:auto;" onclick="excluirNome('${area}',${idx})">Excluir</button>
@@ -447,19 +512,27 @@ function carregarListaEquipe(area) {
 }
 
 function adicionarNome(area) {
-  const idCampo = area === 'Elétrica' ? 'novoNomeEle' : area === 'Mecânica' ? 'novoNomeMec' : 'novoNomeCiv';
-  const nome = document.getElementById(idCampo).value.trim();
+  const mapa = { Elétrica: 'novoNomeEle', Mecânica: 'novoNomeMec', Civil: 'novoNomeCiv' };
+  const nome = document.getElementById(mapa[area]).value.trim();
+  
   if (!nome) return alert('Digite um nome!');
-  if (cfg.equipes[area].includes(nome)) return alert('Nome já existe!');
+  if (cfg.equipes[area].includes(nome)) return alert('Nome já existe nesta equipe!');
+  
   cfg.equipes[area].push(nome);
-  document.getElementById(idCampo).value = '';
+  document.getElementById(mapa[area]).value = '';
   carregarListaEquipe(area);
 }
 
 function editarNome(area, idx) {
-  const novo = prompt('Editar nome:', cfg.equipes[area][idx]);
+  const atual = cfg.equipes[area][idx];
+  const novo = prompt('Editar nome:', atual);
+  
   if (novo && novo.trim()) {
-    cfg.equipes[area][idx] = novo.trim();
+    const limpo = novo.trim();
+    if (cfg.equipes[area].includes(limpo) && cfg.equipes[area].indexOf(limpo) !== idx) {
+      return alert('Nome já existe nesta equipe!');
+    }
+    cfg.equipes[area][idx] = limpo;
     carregarListaEquipe(area);
   }
 }
@@ -477,12 +550,16 @@ function excluirNome(area, idx) {
 function carregarListaAdmins() {
   const div = document.getElementById('listaAdmins');
   div.innerHTML = '';
+  
   cfg.administradores.forEach((nome, idx) => {
+    const nomeSeguro = escaparHtml(nome);
     const item = document.createElement('div');
     item.className = 'nome-item-admin';
     item.innerHTML = `
-      <span>${nome}</span>
-      ${idx > 0 ? `<button class="btn-vermelho" style="padding:4px 8px; font-size:12px; width:auto;" onclick="removerAdmin(${idx})">Excluir</button>` : '<span style="color:green; font-size:12px;">Principal</span>'}`;
+      <span>${nomeSeguro}</span>
+      ${idx > 0 
+        ? `<button class="btn-vermelho" style="padding:4px 8px; font-size:12px; width:auto;" onclick="removerAdmin(${idx})">Excluir</button>` 
+        : '<span style="color:green; font-size:12px;">Principal</span>'}`;
     div.appendChild(item);
   });
 }
@@ -490,6 +567,7 @@ function carregarListaAdmins() {
 function adicionarAdmin() {
   const nome = document.getElementById('novoAdminNome').value.trim();
   if (!nome) return alert('Digite o nome!');
+  
   cfg.administradores.push(nome);
   document.getElementById('novoAdminNome').value = '';
   carregarListaAdmins();
@@ -505,10 +583,13 @@ function removerAdmin(idx) {
 function alterarSenha() {
   const n1 = document.getElementById('novaSenhaAdmin').value;
   const n2 = document.getElementById('confirmaSenhaAdmin').value;
+  
   if (!n1) return alert('Digite a nova senha!');
+  if (n1.length < SENHA_MIN_TAM) return alert(`Use pelo menos ${SENHA_MIN_TAM} caracteres!`);
   if (n1 !== n2) return alert('As senhas não coincidem!');
-  if (n1.length < 4) return alert('Use pelo menos 4 dígitos!');
+  
   cfg.senha = n1;
+  salvarCfg();
   alert('Senha alterada com sucesso!');
   document.getElementById('novaSenhaAdmin').value = '';
   document.getElementById('confirmaSenhaAdmin').value = '';
@@ -520,11 +601,13 @@ function alterarSenha() {
 function carregarListaCamposExtras() {
   const div = document.getElementById('listaCamposExtras');
   div.innerHTML = '';
+  
   cfg.camposExtras.forEach((campo, idx) => {
+    const rotuloSeguro = escaparHtml(campo);
     const item = document.createElement('div');
     item.className = 'nome-item-admin';
     item.innerHTML = `
-      <span>${campo}</span>
+      <span>${rotuloSeguro}</span>
       <button class="btn-vermelho" style="padding:4px 8px; font-size:12px; width:auto;" onclick="removerCampoExtra(${idx})">Excluir</button>`;
     div.appendChild(item);
   });
@@ -533,6 +616,7 @@ function carregarListaCamposExtras() {
 function adicionarCampoExtra() {
   const rotulo = document.getElementById('novoCampoRotulo').value.trim();
   if (!rotulo) return alert('Digite o nome do campo!');
+  
   cfg.camposExtras.push(rotulo);
   document.getElementById('novoCampoRotulo').value = '';
   carregarListaCamposExtras();
@@ -558,6 +642,7 @@ function salvarConfig() {
   
   salvarCfg();
   document.getElementById('salvoOk').style.display = 'block';
+  
   setTimeout(() => {
     document.getElementById('salvoOk').style.display = 'none';
     fecharAdmin();
@@ -575,22 +660,32 @@ function mostrarApoio() {
 
 function carregarNomes() {
   const area = document.querySelector('input[name="area"]:checked')?.value;
+  
   if (!area) {
     document.getElementById('avisoArea').style.display = 'block';
     document.getElementById('blocoSelecao').style.display = 'none';
     return;
   }
+  
   document.getElementById('avisoArea').style.display = 'none';
   document.getElementById('blocoSelecao').style.display = 'block';
   
   const lista = document.getElementById('listaNomes');
   lista.innerHTML = '';
-  cfg.equipes[area].sort((a,b)=>a.localeCompare(b,'pt-BR')).forEach(nome => {
+  
+  cfg.equipes[area].sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach(nome => {
+    const nomeSeguro = escaparHtml(nome);
+    const idUnico = btoa(nome).replace(/=/g, '');
     const div = document.createElement('div');
     div.className = `item-opcao ${selecionados.includes(nome) ? 'selecionado' : ''}`;
-    div.innerHTML = `<input type="checkbox" id="n_${nome}" ${selecionados.includes(nome)?'checked':''} onchange="toggleNome('${nome.replace(/'/g,"\\'")}')"><label for="n_${nome}" style="margin:0; cursor:pointer; flex:1;">${nome}</label>`;
+    div.innerHTML = `
+      <input type="checkbox" id="n_${idUnico}" 
+             ${selecionados.includes(nome) ? 'checked' : ''} 
+             onchange="toggleNome('${nome.replace(/'/g, "\\'").replace(/"/g, '\\"')}')">
+      <label for="n_${idUnico}" style="margin:0; cursor:pointer; flex:1;">${nomeSeguro}</label>`;
     lista.appendChild(div);
   });
+  
   selecionados = selecionados.filter(n => cfg.equipes[area].includes(n));
   atualizarExibicaoSelecionados();
 }
@@ -602,7 +697,11 @@ function alternarLista() {
 }
 
 function toggleNome(nome) {
-  selecionados.includes(nome) ? selecionados = selecionados.filter(n=>n!==nome) : selecionados.push(nome);
+  if (selecionados.includes(nome)) {
+    selecionados = selecionados.filter(n => n !== nome);
+  } else {
+    selecionados.push(nome);
+  }
   atualizarExibicaoSelecionados();
 }
 
@@ -613,12 +712,19 @@ function confirmarSelecao() {
 function atualizarExibicaoSelecionados() {
   const c = document.getElementById('selecionados');
   c.innerHTML = '';
-  selecionados.forEach(n => {
+  
+  selecionados.forEach(nome => {
+    const nomeSeguro = escaparHtml(nome);
     const span = document.createElement('span');
     span.className = 'selecionado-item';
-    span.innerHTML = `${n}<button class="remover" onclick="selecionados=selecionados.filter(x=>x!=='${n.replace(/'/g,"\\'")}');atualizarExibicaoSelecionados();carregarNomes();">×</button>`;
+    span.innerHTML = `${nomeSeguro}<button class="remover" onclick="removerParticipante('${nome.replace(/'/g, "\\'").replace(/"/g, '\\"')}')">×</button>`;
     c.appendChild(span);
   });
+}
+
+function removerParticipante(nome) {
+  selecionados = selecionados.filter(x => x !== nome);
+  carregarNomes();
 }
 
 function limparSelecao() {
@@ -627,19 +733,29 @@ function limparSelecao() {
 }
 
 // ========================================
-// FOTOS
+// PROCESSAMENTO DE FOTOS
 // ========================================
 async function processarFotos(arqs) {
+  for (const arq of arqs) {
+    if (!arq.type.startsWith('image/')) {
+      return alert(`Arquivo "${arq.name}" não é uma imagem válida!`);
+    }
+  }
+  
   fotos = [];
   const prev = document.getElementById('previewFotos');
   prev.innerHTML = '';
+  
   for (const arq of arqs) {
-    if (!arq.type.startsWith('image/')) continue;
     const dados = await redimensionar(arq);
     fotos.push(dados);
+    
     const div = document.createElement('div');
     div.className = 'foto-item';
-    div.innerHTML = `<img src="${dados}"><button class="remover" onclick="fotos.splice(${fotos.length-1},1);this.parentElement.remove();">×</button>`;
+    const idx = fotos.length - 1;
+    div.innerHTML = `
+      <img src="${dados}" alt="Prévia">
+      <button class="remover" onclick="fotos.splice(${idx},1);this.parentElement.remove();">×</button>`;
     prev.appendChild(div);
   }
 }
@@ -651,12 +767,16 @@ function redimensionar(arq) {
       const img = new Image();
       img.onload = () => {
         const c = document.createElement('canvas');
-        const MAX = 1000;
         let w = img.width, h = img.height;
-        if (w>MAX || h>MAX) { if(w>h){h=h*MAX/w;w=MAX;}else{w=w*MAX/h;h=MAX;} }
+        
+        if (w > MAX_FOTO_DIM || h > MAX_FOTO_DIM) {
+          if (w > h) { h = Math.round(h * MAX_FOTO_DIM / w); w = MAX_FOTO_DIM; }
+          else { w = Math.round(w * MAX_FOTO_DIM / h); h = MAX_FOTO_DIM; }
+        }
+        
         c.width = w; c.height = h;
-        c.getContext('2d').drawImage(img,0,0,w,h);
-        res(c.toDataURL('image/jpeg',0.75));
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        res(c.toDataURL('image/jpeg', FOTO_QUALIDADE));
       };
       img.src = e.target.result;
     };
@@ -665,42 +785,50 @@ function redimensionar(arq) {
 }
 
 // ========================================
-// MONTAR E ENVIAR
+// MONTAR E ENVIAR — VALIDAÇÃO PRINCIPAL
 // ========================================
-function montarEEnviar() {
+async function montarEEnviar() {
+  if (isEnviando) return;
+  
   const area = document.querySelector('input[name="area"]:checked')?.value;
   const quem = document.getElementById('quemEnvia').value.trim();
   const desc = document.getElementById('desc').value.trim();
   const local = document.getElementById('local').value.trim();
   const data = document.getElementById('dataAtividade').value;
   const temporario = document.getElementById('participanteTemporario').value.trim();
-
+  
   if (!area) return alert('Selecione a Área Responsável!');
   if (!quem) return alert('Informe seu Nome!');
   if (!desc) return alert('Preencha a Descrição!');
   if (!local) return alert('Informe o Local!');
   if (!data) return alert('Informe a Data da Atividade!');
   if (!selecionados.length && !temporario) return alert('Selecione os Participantes ou informe o Temporário!');
-
+  
   const apoio = [];
-  if (document.getElementById('apoioEle').checked) apoio.push(`Apoio Elétrica: ${document.getElementById('nomeEle').value || 'não informado'}`);
-  if (document.getElementById('apoioMec').checked) apoio.push(`Apoio Mecânica: ${document.getElementById('nomeMec').value || 'não informado'}`);
-  if (document.getElementById('apoioCiv').checked) apoio.push(`Apoio Civil: ${document.getElementById('nomeCiv').value || 'não informado'}`);
-
+  if (document.getElementById('apoioEle').checked) {
+    apoio.push(`Apoio Elétrica: ${document.getElementById('nomeEle').value.trim() || 'não informado'}`);
+  }
+  if (document.getElementById('apoioMec').checked) {
+    apoio.push(`Apoio Mecânica: ${document.getElementById('nomeMec').value.trim() || 'não informado'}`);
+  }
+  if (document.getElementById('apoioCiv').checked) {
+    apoio.push(`Apoio Civil: ${document.getElementById('nomeCiv').value.trim() || 'não informado'}`);
+  }
+  
   let participantesTexto = selecionados.join(', ');
   if (temporario) {
     participantesTexto += (participantesTexto ? ', ' : '') + temporario + ' (Temporário)';
   }
-
+  
   let extras = '';
   if (cfg.camposExtras.length > 0) {
-    extras = cfg.camposExtras.map((_, i) => {
+    extras = cfg.camposExtras.map((rotulo, i) => {
       const el = document.getElementById(`campoExtra_${i}`);
-      return el ? `${cfg.camposExtras[i]}: ${el.value || '-'}` : '';
+      return el ? `${rotulo}: ${el.value.trim() || '-'}` : '';
     }).filter(Boolean).join('\n');
   }
 
-  mensagemFinal = `REGISTRO DE ATIVIDADE - ${area}
+  mensagemFinal = `REGISTRO DE ATIVIDADE — ${area}
 Data/Hora: ${new Date().toLocaleString('pt-BR')}
 Responsável: ${quem}
 Local: ${local}
@@ -709,7 +837,7 @@ Descrição:
 ${desc}
 Participantes:
 ${participantesTexto}
-${apoio.length ? 'Apoio: ' + apoio.join(' | ') : ''}
+${apoio.length ? 'Apoio:\n' + apoio.join('\n') : ''}
 Status: ${document.getElementById('status').value}
 Materiais Pendentes:
 ${document.getElementById('materiais').value.trim() || 'Nenhum'}
@@ -722,31 +850,54 @@ Fotos anexadas: ${fotos.length}`;
   document.getElementById('previa').style.display = 'block';
   document.getElementById('btnCopiar').style.display = 'inline-block';
 
-  fetch(URL_SCRIPT, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      dataHora: new Date().toLocaleString('pt-BR'),
-      area, quemEnvia: quem, descricao: desc, local, dataAtividade: data,
-      apoio: apoio.join(' | '), participantes: participantesTexto,
-      status: document.getElementById('status').value,
-      materiais: document.getElementById('materiais').value.trim(),
-      observacoes: document.getElementById('obs').value.trim(),
-      fotosQtd: fotos.length, fotos: fotos,
-      temporario: temporario,
-      camposExtras: extras
-    })
-  }).then(() => {
+  isEnviando = true;
+  const btnEnviar = document.getElementById('btnEnviar');
+  btnEnviar.disabled = true;
+  btnEnviar.classList.add('carregando');
+
+  try {
+    const resposta = await fetch(URL_SCRIPT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        dataHora: new Date().toLocaleString('pt-BR'),
+        area,
+        quemEnvia: quem,
+        descricao: desc,
+        local,
+        dataAtividade: data,
+        apoio: apoio.join(' | '),
+        participantes: participantesTexto,
+        status: document.getElementById('status').value,
+        materiais: document.getElementById('materiais').value.trim(),
+        observacoes: document.getElementById('obs').value.trim(),
+        fotosQtd: fotos.length,
+        fotos: fotos,
+        temporario: temporario,
+        camposExtras: extras
+      })
+    });
+
     document.getElementById('sucessoPlanilha').style.display = 'block';
     document.getElementById('btnWpp').style.display = 'inline-block';
     document.getElementById('btnNovo').style.display = 'inline-block';
-  }).catch(e => alert('Erro ao salvar: ' + e.message));
+
+  } catch (erro) {
+    alert(`Erro ao salvar: ${erro.message || 'Verifique sua conexão e tente novamente'}`);
+  } finally {
+    isEnviando = false;
+    btnEnviar.disabled = false;
+    btnEnviar.classList.remove('carregando');
+  }
 }
 
+// ========================================
+// FUNÇÃO COPIAR MENSAGEM
+// ========================================
 function copiarMensagem() {
   if (!mensagemFinal) return;
-  
+
   navigator.clipboard.writeText(mensagemFinal)
     .then(() => {
       document.getElementById('avisoCopiado').style.display = 'block';
@@ -761,33 +912,76 @@ function copiarMensagem() {
       areaTexto.style.opacity = '0';
       document.body.appendChild(areaTexto);
       areaTexto.select();
+
       try {
-        document.execCommand('copy');
-        document.getElementById('avisoCopiado').style.display = 'block';
-        setTimeout(() => {
-          document.getElementById('avisoCopiado').style.display = 'none';
-        }, 4000);
-      } catch (err) {
-        alert('Não foi possível copiar automaticamente. Selecione e copie manualmente a mensagem.');
+        const copiado = document.execCommand('copy');
+        if (copiado) {
+          document.getElementById('avisoCopiado').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('avisoCopiado').style.display = 'none';
+          }, 4000);
+        } else {
+          alert('Não foi possível copiar automaticamente. Selecione e copie manualmente.');
+        }
+      } catch {
+        alert('Não foi possível copiar. Selecione o texto e use Ctrl+C.');
       }
       document.body.removeChild(areaTexto);
     });
 }
 
+// ========================================
+// ABRIR GRUPO DO WHATSAPP
+// ========================================
 function abrirWpp() {
   const area = document.querySelector('input[name="area"]:checked')?.value;
   const link = cfg.links[area];
-  if (!link) return alert('Link do grupo não cadastrado! Acesse a Área do Administrador.');
+
+  if (!link) {
+    return alert(`Link do grupo da ${area} não cadastrado!\nAcesse a Área do Administrador → Aba "Grupos" e configure.`);
+  }
+
+  if (!link.startsWith('http')) {
+    return alert('Link inválido! Verifique na Área do Administrador.');
+  }
+
   window.open(link, '_blank');
 }
 
+// ========================================
+// NOVO REGISTRO
+// ========================================
 function novoRegistro() {
-  location.reload();
+  selecionados = [];
+  fotos = [];
+  mensagemFinal = '';
+  isEnviando = false;
+
+  document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+
+  document.getElementById('previewFotos').innerHTML = '';
+  document.getElementById('selecionados').innerHTML = '';
+  document.getElementById('previa').style.display = 'none';
+  document.getElementById('btnCopiar').style.display = 'none';
+  document.getElementById('sucessoPlanilha').style.display = 'none';
+  document.getElementById('btnWpp').style.display = 'none';
+  document.getElementById('btnNovo').style.display = 'none';
+  document.getElementById('blocoSelecao').style.display = 'none';
+  document.getElementById('avisoArea').style.display = 'block';
+
+  document.getElementById('nomeEleDiv').style.display = 'none';
+  document.getElementById('nomeMecDiv').style.display = 'none';
+  document.getElementById('nomeCivDiv').style.display = 'none';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// INICIALIZA
-iniciar();
+// ========================================
+// INICIALIZAÇÃO
+// ========================================
+document.addEventListener('DOMContentLoaded', iniciar);
 </script>
-
 </body>
 </html>
