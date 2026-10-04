@@ -11,6 +11,7 @@ body {background:#eaf2fa; padding:15px; max-width:540px; margin:0 auto; padding-
 .logo-topo img {max-width:220px; height:auto; display:inline-block;}
 h1 {color:#0055b8; text-align:center; margin-bottom:15px; font-size:20px;}
 .aviso {background:#e6f0fa; border-left:4px solid #0055b8; padding:12px; margin-bottom:15px; border-radius:0 8px 8px 0; font-size:14px; text-align:left;}
+.aviso-destaque {background:#e8f5e9; border-left:4px solid #2e7d32; padding:12px; margin:10px 0; border-radius:0 8px 8px 0; font-size:14px; font-weight:bold;}
 .card {background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 10px rgba(0,85,184,0.1);}
 label {display:block; margin:12px 0 6px; font-weight:bold; color:#0055b8; font-size:15px; text-align:left;}
 input, textarea, select {width:100%; padding:12px; border:2px solid #b3d1f0; border-radius:8px; font-size:16px; background:#fafcfe; text-align:left;}
@@ -174,9 +175,11 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
     </div>
     
     <button id="btnCopiar" class="btn-azul" style="display:none; margin-top:10px;" onclick="copiarMensagem()">Copiar Mensagem</button>
-    <div id="avisoCopiado" style="display:none; background:#e3f2fd; padding:10px; margin-top:8px; border-radius:6px;">Copiado! Cole no WhatsApp</div>
+    <div id="avisoCopiado" class="aviso-copiar">✅ Mensagem copiada! Já está na área de transferência</div>
     
     <div id="sucessoMsg" class="sucesso-msg">Mensagem pronta para envio!</div>
+    
+    <div class="aviso-destaque" id="avisoWpp" style="display:none;">👇 Ao abrir o WhatsApp, a mensagem já vai aparecer pronta para enviar!</div>
     
     <button id="btnWpp" class="btn-whatsapp" style="display:none;" onclick="abrirWpp()">Enviar para o Grupo</button>
     <button id="btnNovo" class="btn-laranja" style="display:none;" onclick="novoRegistro()">Novo Registro</button>
@@ -267,7 +270,6 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
 </div>
 
 <script>
-// LINKS FIXOS DOS GRUPOS — NÃO PRECISA CONFIGURAR MAIS!
 const LINKS_GRUPOS = {
   "Elétrica": "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi",
   "Mecânica": "https://chat.whatsapp.com/GpQFU5Ut97t98knUGBA2AY",
@@ -347,7 +349,7 @@ function carregarConfiguracoes() {
   if (salvas) {
     try {
       cfg = { ...PADRAO, ...JSON.parse(salvas) };
-      cfg.links = { ...LINKS_GRUPOS }; // Sempre garante os links corretos
+      cfg.links = { ...LINKS_GRUPOS };
     } catch (e) { cfg = { ...PADRAO }; }
   } else { cfg = { ...PADRAO }; }
 }
@@ -555,6 +557,7 @@ Fotos anexadas: ${fotosBase64.length}`;
   document.getElementById('previa').style.display = 'block';
   document.getElementById('btnCopiar').style.display = 'inline-block';
   document.getElementById('sucessoMsg').style.display = 'block';
+  document.getElementById('avisoWpp').style.display = 'block';
   document.getElementById('btnWpp').style.display = 'inline-block';
   document.getElementById('btnNovo').style.display = 'inline-block';
   alert("Mensagem montada com sucesso!");
@@ -570,9 +573,17 @@ function copiarMensagem() {
 
 function abrirWpp() {
   const area = document.querySelector('input[name="area"]:checked')?.value;
-  const link = LINKS_GRUPOS[area]; // Usa o link fixo direto
-  if (!link) return alert('Grupo não encontrado!');
-  window.open(link, '_blank');
+  const linkGrupo = LINKS_GRUPOS[area];
+  if (!linkGrupo) return alert('Grupo não encontrado!');
+  
+  // Converte a mensagem para formato de URL (para aparecer já escrita)
+  const mensagemCodificada = encodeURIComponent(mensagemFinal);
+  
+  // Extrai o código do grupo e abre com mensagem pronta
+  const codigoGrupo = linkGrupo.split('/').pop();
+  const linkComMensagem = `https://chat.whatsapp.com/${codigoGrupo}?text=${mensagemCodificada}`;
+  
+  window.open(linkComMensagem, '_blank');
 }
 
 function novoRegistro() { location.reload(); }
