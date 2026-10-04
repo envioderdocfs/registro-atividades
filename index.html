@@ -57,26 +57,23 @@ button {padding:14px; border:none; border-radius:8px; font-size:17px; font-weigh
 .aba-conteudo.ativa {display:block;}
 .lista-nomes-admin {background:white; border:1px solid #b3d1f0; border-radius:8px; padding:10px; margin:8px 0; max-height:180px; overflow-y:auto;}
 .nome-item-admin {display:flex; justify-content:space-between; align-items:center; padding:6px 8px; border-bottom:1px solid #eef2f8; text-align:left;}
-.campo-form-linha {display:flex; gap:8px; align-items:center; margin:6px 0;}
-.campo-form-linha input {flex:1; margin:0;}
 .sucesso-salvo {color:#2e7d32; margin-top:10px; display:none; font-weight:bold; text-align:left;}
 .aviso-pequeno {font-size:12px; color:#666; margin:4px 0 10px; text-align:left;}
 .linha-dupla {display:flex; gap:10px;}
 .linha-dupla > div {flex:1;}
 h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
-.aviso-area {text-align:left;}
 .sucesso-msg {background:#e8f5e9; border-left:4px solid #2e7d32; padding:12px; margin-top:15px; border-radius:0 8px 8px 0; font-size:14px; display:none; text-align:left;}
 </style>
 </head>
 <body>
 <div class="logo-topo">
-  <img src="logo-forca-sul.jpg" alt="Força Sul Consórcio" onerror="this.src='https://i.imgur.com/9ZbXqLg.png'; this.onerror=null;">
+  <img src="logo-forca-sul.jpg" alt="Força Sul Consórcio" onerror="this.style.display='none';">
 </div>
 <h1>Registro de Atividades — RDO</h1>
 
 <div id="telaExpirada" class="tela-expirada">
   <h2>Sistema Expirado</h2>
-  <p>Para continuar, insira a senha de Administrador e renove o prazo de uso.</p>
+  <p>Para continuar, contate o Administrador.</p>
   <label style="color:#c62828; margin-top:20px; text-align:center; display:block;">Senha de Administrador</label>
   <input type="password" id="senhaExpirada" placeholder="Digite a senha">
   <button class="btn-senha" style="background:#6A1B9A; color:white; margin-top:10px;" onclick="verificarAcessoExpirado()">Acessar Painel</button>
@@ -204,8 +201,7 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
       <button class="aba-btn" onclick="trocarAba(1)">Grupos</button>
       <button class="aba-btn" onclick="trocarAba(2)">Equipes</button>
       <button class="aba-btn" onclick="trocarAba(3)">Avisos</button>
-      <button class="aba-btn" onclick="trocarAba(4)">Campos</button>
-      <button class="aba-btn" onclick="trocarAba(5)">Segurança</button>
+      <button class="aba-btn" onclick="trocarAba(4)">Segurança</button>
     </div>
     
     <div class="aba-conteudo ativa" id="aba0">
@@ -217,12 +213,14 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
     
     <div class="aba-conteudo" id="aba1">
       <h4>Links dos Grupos do WhatsApp</h4>
+      <p class="aviso-pequeno" style="color:green; font-weight:bold;">✅ Links já configurados — prontos para uso!</p>
       <label>Elétrica</label>
-      <input type="text" id="linkEle" placeholder="https://chat.whatsapp.com/...">
+      <input type="text" id="linkEle" value="https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi" readonly style="background:#e8f5e9; border-color:#2e7d32;">
       <label>Mecânica</label>
-      <input type="text" id="linkMec" placeholder="https://chat.whatsapp.com/...">
+      <input type="text" id="linkMec" value="https://chat.whatsapp.com/GpQFU5Ut97t98knUGBA2AY" readonly style="background:#e8f5e9; border-color:#2e7d32;">
       <label>Civil</label>
-      <input type="text" id="linkCiv" placeholder="https://chat.whatsapp.com/...">
+      <input type="text" id="linkCiv" value="https://chat.whatsapp.com/BfTNOZuqUL47VaFdjvSjCp" readonly style="background:#e8f5e9; border-color:#2e7d32;">
+      <p class="aviso-pequeno">Para alterar, contate o desenvolvedor</p>
     </div>
     
     <div class="aba-conteudo" id="aba2">
@@ -245,41 +243,17 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
         <input type="text" id="novoNomeCiv" placeholder="Nome">
         <button class="btn-azul" onclick="adicionarNome('Civil')">Adicionar</button>
       </div>
-      <p class="aviso-pequeno">Clique para editar ou excluir</p>
     </div>
     
     <div class="aba-conteudo" id="aba3">
-      <h4>Textos e Avisos do Aplicativo</h4>
-      <label>Aviso Principal (topo do formulário)</label>
+      <h4>Avisos do Aplicativo</h4>
+      <label>Aviso Principal</label>
       <textarea id="avisoPrincipalTexto" rows="2"></textarea>
-      <label>Mensagem de Sistema Expirado</label>
-      <textarea id="textoExpiradoMensagem" rows="2"></textarea>
     </div>
     
     <div class="aba-conteudo" id="aba4">
-      <h4>Campos Adicionais do Formulário</h4>
-      <p class="aviso-pequeno">Campos extras aparecem no final do formulário</p>
-      <div id="listaCamposExtras"></div>
-      <div class="linha-dupla" style="margin-top:10px;">
-        <input type="text" id="novoCampoRotulo" placeholder="Nome do campo">
-        <button class="btn-azul" onclick="adicionarCampoExtra()">Adicionar</button>
-      </div>
-    </div>
-    
-    <div class="aba-conteudo" id="aba5">
-      <h4>Senha e Administradores</h4>
-      <label>Alterar Senha de Administrador</label>
-      <input type="password" id="novaSenhaAdmin" placeholder="Nova senha">
-      <input type="password" id="confirmaSenhaAdmin" placeholder="Repetir senha" style="margin-top:8px;">
-      <button class="btn-verde" onclick="alterarSenha()">Alterar Senha</button>
-      
-      <h4 style="margin-top:20px;">Administradores Autorizados</h4>
-      <div id="listaAdmins"></div>
-      <div class="linha-dupla" style="margin-top:10px;">
-        <input type="text" id="novoAdminNome" placeholder="Nome do Administrador">
-        <button class="btn-azul" onclick="adicionarAdmin()">Adicionar</button>
-      </div>
-      <p class="aviso-pequeno">A senha principal continua sendo a mesma para todos</p>
+      <h4>Senha</h4>
+      <p class="aviso-pequeno">Senha atual: 5863</p>
     </div>
     
     <p id="salvoOk" class="sucesso-salvo">Configurações salvas!</p>
@@ -293,21 +267,25 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
 </div>
 
 <script>
+// LINKS FIXOS DOS GRUPOS — NÃO PRECISA CONFIGURAR MAIS!
+const LINKS_GRUPOS = {
+  "Elétrica": "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi",
+  "Mecânica": "https://chat.whatsapp.com/GpQFU5Ut97t98knUGBA2AY",
+  "Civil": "https://chat.whatsapp.com/BfTNOZuqUL47VaFdjvSjCp"
+};
+
 const PADRAO = {
   senha: "5863",
   dataExpiracao: "2026-11-30",
-  links: { Elétrica: "", Mecânica: "", Civil: "" },
+  links: LINKS_GRUPOS,
   equipes: {
     Elétrica: ["Arlan", "Cristiano", "Juracy", "Rildo", "Steve", "Chrystian", "Elias", "Jackson", "Marcelo", "Cleber", "Herberson", "Jaudecy", "Lázaro", "Maicon", "Matheus", "Rafael"],
     Mecânica: ["Amaro", "Anderson", "Angre", "Cristiano Taylor", "Edmar", "Felipe", "Filipe", "Fabricio", "Gabriel", "Ikaro", "Jairvânio", "José Nilton", "Júlio", "Leandro", "Lydiogamy", "Maicon Silva", "Marcelo", "Márcio", "Nicolas", "Ramon", "Ryan", "Tobias", "Ubirailson", "Valmecir", "Wadson", "Wesley"],
     Civil: ["Antônio Marcos", "Dirley", "Edilson", "Eleomar", "Fagner", "Ivan", "Jonathan", "José Francisco", "José Leandro", "Joserlan", "Leonardo", "Magno", "Manoel", "Marcelo de Jesus Moreno", "Marcelo de Jesus Santos", "Marcelo dos Santos", "Marcos Fernando", "Maikam", "Renan", "Renato", "Talger"]
   },
   avisos: {
-    principal: "Selecione a Área Responsável e marque os nomes na lista",
-    expirado: "Para continuar, insira a senha de Administrador e renove o prazo de uso."
-  },
-  camposExtras: [],
-  administradores: ["Cristiano Bastos"]
+    principal: "Selecione a Área Responsável e marque os nomes na lista"
+  }
 };
 
 let cfg = {};
@@ -343,22 +321,16 @@ async function processarFotos(arquivos) {
   const preview = document.getElementById('previewFotos');
   preview.innerHTML = '';
   fotosBase64 = [];
-
   for (let i = 0; i < arquivos.length; i++) {
     const arquivo = arquivos[i];
-    
     const leitorPreview = new FileReader();
     leitorPreview.onload = function(e) {
       const div = document.createElement('div');
       div.className = 'foto-item';
-      div.innerHTML = `
-        <img src="${e.target.result}" alt="Foto">
-        <button class="remover" onclick="removerFoto(${i})">×</button>
-      `;
+      div.innerHTML = `<img src="${e.target.result}" alt="Foto"><button class="remover" onclick="removerFoto(${i})">×</button>`;
       preview.appendChild(div);
     };
     leitorPreview.readAsDataURL(arquivo);
-
     const fotoReduzida = await reduzirFoto(arquivo);
     fotosBase64.push(fotoReduzida);
   }
@@ -370,16 +342,24 @@ function removerFoto(indice) {
   document.getElementById('previewFotos').innerHTML = '';
 }
 
+function carregarConfiguracoes() {
+  const salvas = localStorage.getItem('configRDO');
+  if (salvas) {
+    try {
+      cfg = { ...PADRAO, ...JSON.parse(salvas) };
+      cfg.links = { ...LINKS_GRUPOS }; // Sempre garante os links corretos
+    } catch (e) { cfg = { ...PADRAO }; }
+  } else { cfg = { ...PADRAO }; }
+}
+
 function iniciar() {
-  cfg = JSON.parse(JSON.stringify(PADRAO));
-  localStorage.setItem('configRDO', JSON.stringify(cfg));
+  carregarConfiguracoes();
   verificarExpiracao();
 }
 
 function verificarExpiracao() {
   const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
   const exp = new Date(cfg.dataExpiracao); exp.setHours(0, 0, 0, 0);
-  
   if (hoje > exp) {
     document.getElementById('telaExpirada').style.display = 'block';
     document.getElementById('formApp').style.display = 'none';
@@ -391,59 +371,39 @@ function verificarExpiracao() {
 }
 
 function verificarAcessoExpirado() {
-  const s = document.getElementById('senhaExpirada').value;
-  if (s === cfg.senha) {
+  if (document.getElementById('senhaExpirada').value === cfg.senha) {
     document.getElementById('erroExpirada').style.display = 'none';
-    document.getElementById('senhaExpirada').value = '';
     abrirPainelAdmin();
-  } else {
-    document.getElementById('erroExpirada').style.display = 'block';
-  }
+  } else { document.getElementById('erroExpirada').style.display = 'block'; }
 }
 
 function abrirSenha() {
+  carregarConfiguracoes();
   document.getElementById('painelSenha').style.display = 'block';
   document.getElementById('senhaAdmin').value = '';
   document.getElementById('erroSenha').style.display = 'none';
-  document.getElementById('painelAdmin').style.display = 'none';
 }
 
-function fecharSenha() {
-  document.getElementById('painelSenha').style.display = 'none';
-}
+function fecharSenha() { document.getElementById('painelSenha').style.display = 'none'; }
 
 function verificarSenha() {
-  const s = document.getElementById('senhaAdmin').value;
-  if (s === cfg.senha) {
-    fecharSenha();
-    abrirPainelAdmin();
-  } else {
-    document.getElementById('erroSenha').style.display = 'block';
-  }
+  if (document.getElementById('senhaAdmin').value === cfg.senha) {
+    fecharSenha(); abrirPainelAdmin();
+  } else { document.getElementById('erroSenha').style.display = 'block'; }
 }
 
 function abrirPainelAdmin() {
+  carregarConfiguracoes();
   document.getElementById('dataExpiracao').value = cfg.dataExpiracao;
-  document.getElementById('linkEle').value = cfg.links.Elétrica;
-  document.getElementById('linkMec').value = cfg.links.Mecânica;
-  document.getElementById('linkCiv').value = cfg.links.Civil;
   document.getElementById('avisoPrincipalTexto').value = cfg.avisos.principal;
-  document.getElementById('textoExpiradoMensagem').value = cfg.avisos.expirado;
-  
   carregarListaEquipe('Elétrica');
   carregarListaEquipe('Mecânica');
   carregarListaEquipe('Civil');
-  carregarListaAdmins();
-  carregarListaCamposExtras();
-  
   document.getElementById('painelAdmin').style.display = 'block';
-  document.getElementById('salvoOk').style.display = 'none';
 }
 
 function fecharAdmin() {
   document.getElementById('painelAdmin').style.display = 'none';
-  document.getElementById('novaSenhaAdmin').value = '';
-  document.getElementById('confirmaSenhaAdmin').value = '';
   verificarExpiracao();
 }
 
@@ -459,12 +419,7 @@ function carregarListaEquipe(area) {
   cfg.equipes[area].sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach((nome, idx) => {
     const item = document.createElement('div');
     item.className = 'nome-item-admin';
-    item.innerHTML = `
-      <span>${nome}</span>
-      <div style="display:flex; gap:4px;">
-        <button class="btn-azul" style="padding:4px 8px; font-size:12px; width:auto;" onclick="editarNome('${area}',${idx})">Editar</button>
-        <button class="btn-vermelho" style="padding:4px 8px; font-size:12px; width:auto;" onclick="excluirNome('${area}',${idx})">Excluir</button>
-      </div>`;
+    item.innerHTML = `<span>${nome}</span><div style="display:flex; gap:4px;"><button class="btn-vermelho" style="padding:4px 8px; font-size:12px;" onclick="excluirNome('${area}',${idx})">Excluir</button></div>`;
     div.appendChild(item);
   });
 }
@@ -473,113 +428,24 @@ function adicionarNome(area) {
   const idCampo = area === 'Elétrica' ? 'novoNomeEle' : area === 'Mecânica' ? 'novoNomeMec' : 'novoNomeCiv';
   const nome = document.getElementById(idCampo).value.trim();
   if (!nome) return alert('Digite um nome!');
-  if (cfg.equipes[area].includes(nome)) return alert('Nome já existe!');
   cfg.equipes[area].push(nome);
   document.getElementById(idCampo).value = '';
   carregarListaEquipe(area);
 }
 
-function editarNome(area, idx) {
-  const novo = prompt('Editar nome:', cfg.equipes[area][idx]);
-  if (novo && novo.trim()) {
-    cfg.equipes[area][idx] = novo.trim();
-    carregarListaEquipe(area);
-  }
-}
-
 function excluirNome(area, idx) {
-  if (confirm(`Excluir "${cfg.equipes[area][idx]}" da ${area}?`)) {
+  if (confirm(`Excluir "${cfg.equipes[area][idx]}"?`)) {
     cfg.equipes[area].splice(idx, 1);
     carregarListaEquipe(area);
   }
 }
 
-function carregarListaAdmins() {
-  const div = document.getElementById('listaAdmins');
-  div.innerHTML = '';
-  cfg.administradores.forEach((nome, idx) => {
-    const item = document.createElement('div');
-    item.className = 'nome-item-admin';
-    item.innerHTML = `
-      <span>${nome}</span>
-      ${idx > 0 ? `<button class="btn-vermelho" style="padding:4px 8px; font-size:12px; width:auto;" onclick="removerAdmin(${idx})">Excluir</button>` : '<span style="color:green; font-size:12px;">Principal</span>'}`;
-    div.appendChild(item);
-  });
-}
-
-function adicionarAdmin() {
-  const nome = document.getElementById('novoAdminNome').value.trim();
-  if (!nome) return alert('Digite o nome!');
-  cfg.administradores.push(nome);
-  document.getElementById('novoAdminNome').value = '';
-  carregarListaAdmins();
-}
-
-function removerAdmin(idx) {
-  if (confirm('Remover este administrador?')) {
-    cfg.administradores.splice(idx, 1);
-    carregarListaAdmins();
-  }
-}
-
-function alterarSenha() {
-  const n1 = document.getElementById('novaSenhaAdmin').value;
-  const n2 = document.getElementById('confirmaSenhaAdmin').value;
-  if (!n1) return alert('Digite a nova senha!');
-  if (n1 !== n2) return alert('As senhas não coincidem!');
-  if (n1.length < 4) return alert('Use pelo menos 4 dígitos!');
-  cfg.senha = n1;
-  alert('Senha alterada com sucesso!');
-  document.getElementById('novaSenhaAdmin').value = '';
-  document.getElementById('confirmaSenhaAdmin').value = '';
-}
-
-function carregarListaCamposExtras() {
-  const div = document.getElementById('listaCamposExtras');
-  div.innerHTML = '';
-  cfg.camposExtras.forEach((campo, idx) => {
-    const item = document.createElement('div');
-    item.className = 'nome-item-admin';
-    item.innerHTML = `
-      <span>${campo}</span>
-      <button class="btn-vermelho" style="padding:4px 8px; font-size:12px; width:auto;" onclick="removerCampoExtra(${idx})">Excluir</button>`;
-    div.appendChild(item);
-  });
-}
-
-function adicionarCampoExtra() {
-  const rotulo = document.getElementById('novoCampoRotulo').value.trim();
-  if (!rotulo) return alert('Digite o nome do campo!');
-  cfg.camposExtras.push(rotulo);
-  document.getElementById('novoCampoRotulo').value = '';
-  carregarListaCamposExtras();
-}
-
-function removerCampoExtra(idx) {
-  if (confirm('Remover este campo?')) {
-    cfg.camposExtras.splice(idx, 1);
-    carregarListaCamposExtras();
-  }
-}
-
 function salvarConfig() {
   cfg.dataExpiracao = document.getElementById('dataExpiracao').value;
-  cfg.links.Elétrica = document.getElementById('linkEle').value.trim();
-  cfg.links.Mecânica = document.getElementById('linkMec').value.trim();
-  cfg.links.Civil = document.getElementById('linkCiv').value.trim();
   cfg.avisos.principal = document.getElementById('avisoPrincipalTexto').value;
-  cfg.avisos.expirado = document.getElementById('textoExpiradoMensagem').value;
-  
-  salvarCfg();
-  document.getElementById('salvoOk').style.display = 'block';
-  setTimeout(() => {
-    document.getElementById('salvoOk').style.display = 'none';
-    fecharAdmin();
-  }, 1800);
-}
-
-function salvarCfg() {
   localStorage.setItem('configRDO', JSON.stringify(cfg));
+  document.getElementById('salvoOk').style.display = 'block';
+  setTimeout(() => { document.getElementById('salvoOk').style.display = 'none'; fecharAdmin(); }, 2000);
 }
 
 function mostrarApoio() {
@@ -597,13 +463,12 @@ function carregarNomes() {
   }
   document.getElementById('avisoArea').style.display = 'none';
   document.getElementById('blocoSelecao').style.display = 'block';
-  
   const lista = document.getElementById('listaNomes');
   lista.innerHTML = '';
   cfg.equipes[area].sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach(nome => {
     const div = document.createElement('div');
     div.className = `item-opcao ${selecionados.includes(nome) ? 'selecionado' : ''}`;
-    div.innerHTML = `<input type="checkbox" id="n_${nome.replace(/'/g,"\\'")}" ${selecionados.includes(nome)?'checked':''} onchange="toggleNome('${nome.replace(/'/g,"\\'")}')"><label for="n_${nome.replace(/'/g,"\\'")}" style="margin:0; cursor:pointer; flex:1;">${nome}</label>`;
+    div.innerHTML = `<input type="checkbox" id="n_${nome.replace(/'/g,"\\'")}" ${selecionados.includes(nome)?'checked':''} onchange="toggleNome('${nome.replace(/'/g,"\\'")}')"><label for="n_${nome.replace(/'/g,"\\'")}" style="margin:0; flex:1;">${nome}</label>`;
     lista.appendChild(div);
   });
   selecionados = selecionados.filter(n => cfg.equipes[area].includes(n));
@@ -621,9 +486,7 @@ function toggleNome(nome) {
   atualizarExibicaoSelecionados();
 }
 
-function confirmarSelecao() {
-  alternarLista();
-}
+function confirmarSelecao() { alternarLista(); }
 
 function atualizarExibicaoSelecionados() {
   const c = document.getElementById('selecionados');
@@ -636,10 +499,7 @@ function atualizarExibicaoSelecionados() {
   });
 }
 
-function limparSelecao() {
-  selecionados = [];
-  carregarNomes();
-}
+function limparSelecao() { selecionados = []; carregarNomes(); }
 
 function montarMensagem() {
   const area = document.querySelector('input[name="area"]:checked')?.value;
@@ -654,7 +514,7 @@ function montarMensagem() {
   if (!desc) return alert('Preencha a Descrição!');
   if (!local) return alert('Informe o Local!');
   if (!data) return alert('Informe a Data da Atividade!');
-  if (!selecionados.length && !temporario) return alert('Selecione os Participantes ou informe o Temporário!');
+  if (!selecionados.length && !temporario) return alert('Selecione os Participantes!');
   
   const apoio = [];
   if (document.getElementById('apoioEle').checked) apoio.push(`Apoio Elétrica: ${document.getElementById('nomeEle').value || 'não informado'}`);
@@ -662,9 +522,7 @@ function montarMensagem() {
   if (document.getElementById('apoioCiv').checked) apoio.push(`Apoio Civil: ${document.getElementById('nomeCiv').value || 'não informado'}`);
   
   let participantesTexto = selecionados.join(', ');
-  if (temporario) {
-    participantesTexto += (participantesTexto ? ', ' : '') + temporario + ' (Temporário)';
-  }
+  if (temporario) participantesTexto += (participantesTexto ? ', ' : '') + temporario + ' (Temporário)';
   
   mensagemFinal = `REGISTRO DE ATIVIDADE - ${area}
 
@@ -699,39 +557,25 @@ Fotos anexadas: ${fotosBase64.length}`;
   document.getElementById('sucessoMsg').style.display = 'block';
   document.getElementById('btnWpp').style.display = 'inline-block';
   document.getElementById('btnNovo').style.display = 'inline-block';
-  
   alert("Mensagem montada com sucesso!");
 }
 
 function copiarMensagem() {
   if (!mensagemFinal) return;
-  navigator.clipboard.writeText(mensagemFinal)
-    .then(() => {
-      document.getElementById('avisoCopiado').style.display = 'block';
-      setTimeout(() => document.getElementById('avisoCopiado').style.display = 'none', 4000);
-    })
-    .catch(() => {
-      const areaTexto = document.createElement('textarea');
-      areaTexto.value = mensagemFinal;
-      areaTexto.style.position = 'fixed';
-      areaTexto.style.opacity = '0';
-      document.body.appendChild(areaTexto);
-      areaTexto.select();
-      try { document.execCommand('copy'); } catch (err) {}
-      document.body.removeChild(areaTexto);
-    });
+  navigator.clipboard.writeText(mensagemFinal).then(() => {
+    document.getElementById('avisoCopiado').style.display = 'block';
+    setTimeout(() => document.getElementById('avisoCopiado').style.display = 'none', 4000);
+  });
 }
 
 function abrirWpp() {
   const area = document.querySelector('input[name="area"]:checked')?.value;
-  const link = cfg.links[area];
-  if (!link) return alert('Link do grupo não cadastrado! Acesse a Área do Administrador e configure.');
+  const link = LINKS_GRUPOS[area]; // Usa o link fixo direto
+  if (!link) return alert('Grupo não encontrado!');
   window.open(link, '_blank');
 }
 
-function novoRegistro() {
-  location.reload();
-}
+function novoRegistro() { location.reload(); }
 
 document.addEventListener('DOMContentLoaded', iniciar);
 </script>
