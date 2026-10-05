@@ -9,60 +9,70 @@
 body {background:#eaf2fa; padding:15px; max-width:540px; margin:0 auto; padding-bottom:80px;}
 .logo-topo {text-align:center; margin-bottom:15px; padding-top:10px;}
 .logo-topo img {max-width:220px; height:auto; display:inline-block;}
-h1 {color:#0055b8; text-align:center; margin-bottom:15px; font-size:20px;}
-.aviso {background:#e6f0fa; border-left:4px solid #0055b8; padding:12px; margin-bottom:15px; border-radius:0 8px 8px 0; font-size:14px; text-align:left;}
-.card {background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 10px rgba(0,85,184,0.1);}
-label {display:block; margin:12px 0 6px; font-weight:bold; color:#0055b8; font-size:15px; text-align:left;}
-input, textarea, select {width:100%; padding:12px; border:2px solid #b3d1f0; border-radius:8px; font-size:16px; background:#fafcfe; text-align:left;}
-button {padding:14px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer; margin-top:10px; width:100%;}
-.btn-principal {background:#0055b8; color:white;}
-.btn-admin {background:#6A1B9A; color:white; padding:12px; font-size:15px; width:100%; margin-top:20px;}
-.btn-senha {background:#6A1B9A; color:white; padding:10px; font-size:15px;}
-.btn-cancelar {background:#757575; color:white; margin-right:8px; width:auto; padding:10px 16px; font-size:15px;}
-.btn-azul {background:#0077ed; color:white; padding:10px 14px; margin:5px 5px 5px 0; font-size:14px; width:auto; text-align:left;}
-.btn-verde {background:#2e7d32; color:white; padding:10px 16px; margin:5px 0; font-size:15px; width:auto;}
-.btn-vermelho {background:#c62828; color:white; padding:8px 12px; font-size:14px; width:auto;}
-.btn-foto {background:#4caf50; color:white; margin:8px 0; text-align:left;}
-.btn-whatsapp {background:#25D366; color:white; margin-top:15px;}
-.btn-laranja {background:#ff9800; color:white; margin-top:15px;}
-.aviso-senha-erro {color:#d32f2f; margin-top:8px; display:none; font-size:14px; text-align:left;}
-.tela-expirada {background:#ffebee; border:2px solid #d32f2f; padding:30px 20px; border-radius:12px; text-align:center; margin-top:20px; display:none;}
-.painel-admin {background:#f3e5f5; border:2px solid #6A1B9A; border-radius:12px; padding:20px; margin-top:20px; display:none;}
-.painel-senha {display:none; margin-top:15px;}
-.rodape {text-align:center; margin-top:30px; padding:15px; color:#0055b8; font-size:14px; border-top:1px solid #b3d1f0;}
-.lista-selecao-multipla {border:2px solid #b3d1f0; border-radius:8px; background:#fafcfe; max-height:220px; overflow-y:auto; margin:8px 0; text-align:left; padding:0;}
-.item-opcao {display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid #e0e8f0; cursor:pointer; text-align:left; width:100%;}
+h1 {color:#0055b8; text-align:center; margin-bottom:20px; font-size:22px;}
+.aviso {background:#e6f0fa; border-left:4px solid #0055b8; padding:12px; margin-bottom:20px; border-radius:0 8px 8px 0; font-size:14px; line-height:1.5;}
+.card {background:white; border-radius:12px; padding:25px; margin-bottom:20px; box-shadow:0 2px 10px rgba(0,85,184,0.1);}
+label {display:block; margin:18px 0 8px; font-weight:bold; color:#0055b8; font-size:15px; text-align:left;}
+label:first-of-type {margin-top:0;}
+input, textarea, select {width:100%; padding:14px; border:2px solid #b3d1f0; border-radius:8px; font-size:16px; background:#fafcfe; text-align:left;}
+textarea {min-height:100px; resize:vertical;}
+button {padding:14px; border:none; border-radius:8px; font-size:17px; font-weight:bold; cursor:pointer; margin-top:12px; width:100%; transition:0.2s;}
+button:active {transform:scale(0.98);}
+.btn-principal {background:#0055b8; color:white; margin-top:25px;}
+.btn-salvar {background:#2e7d32; color:white; margin-top:15px;}
+.btn-admin {background:#6A1B9A; color:white; padding:12px; font-size:15px; width:100%; margin-top:25px;}
+.btn-senha {background:#6A1B9A; color:white; padding:12px; font-size:15px;}
+.btn-cancelar {background:#757575; color:white; margin-right:10px; width:auto; padding:12px 20px; font-size:15px;}
+.btn-azul {background:#0077ed; color:white; padding:12px 18px; margin:8px 8px 8px 0; font-size:15px; width:auto; text-align:left; border-radius:8px;}
+.btn-verde {background:#2e7d32; color:white; padding:12px 20px; margin:8px 0; font-size:15px; width:auto; border-radius:8px;}
+.btn-vermelho {background:#c62828; color:white; padding:10px 16px; font-size:14px; width:auto; border-radius:6px;}
+.btn-foto {background:#4caf50; color:white; margin:12px 0; text-align:left;}
+.btn-whatsapp {background:#25D366; color:white; margin-top:12px;}
+.btn-laranja {background:#ff9800; color:white; margin-top:12px;}
+.aviso-senha-erro {color:#d32f2f; margin-top:10px; display:none; font-size:14px; padding:8px;}
+.tela-expirada {background:#ffebee; border:2px solid #d32f2f; padding:40px 25px; border-radius:12px; text-align:center; margin-top:30px; display:none;}
+.painel-admin {background:#f3e5f5; border:2px solid #6A1B9A; border-radius:12px; padding:25px; margin-top:25px; display:none;}
+.painel-senha {display:none; margin-top:20px;}
+.rodape {text-align:center; margin-top:40px; padding:20px; color:#0055b8; font-size:14px; border-top:1px solid #b3d1f0;}
+.area-selecao {background:#eef5ff; border:2px solid #90caf9; padding:18px; border-radius:10px; margin:10px 0;}
+.area-opcao {display:flex; align-items:center; gap:12px; margin:10px 0; font-size:16px; padding:8px 4px; cursor:pointer; border-radius:6px; transition:0.2s;}
+.area-opcao:hover {background:#e3f2fd;}
+.area-opcao input {width:auto; margin:0; transform:scale(1.2); cursor:pointer;}
+.apoio-area {background:#f0f6fc; border:2px solid #b3d1f0; padding:18px; border-radius:10px; margin:10px 0;}
+.apoio-opcao {display:flex; align-items:center; gap:12px; margin:12px 0; font-size:16px; padding:6px 4px; cursor:pointer; border-radius:6px; transition:0.2s;}
+.apoio-opcao:hover {background:#e6f0fa;}
+.apoio-opcao input {width:auto; margin:0; transform:scale(1.2); cursor:pointer;}
+.apoio-subcampo {margin:10px 0 0 34px; padding-left:10px; border-left:2px solid #b3d1f0;}
+.apoio-subcampo input {margin:8px 0;}
+.lista-selecao-multipla {border:2px solid #b3d1f0; border-radius:8px; background:#fafcfe; max-height:220px; overflow-y:auto; margin:10px 0; text-align:left; padding:0;}
+.item-opcao {display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid #e0e8f0; cursor:pointer; text-align:left; width:100%; transition:0.15s;}
 .item-opcao:last-child {border-bottom:none;}
-.item-opcao.selecionado {background:#e6f0fa;}
-.item-opcao input {width:auto; margin:0; padding:0;}
-.selecionados {display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; min-height:40px; text-align:left;}
-.selecionado-item {background:#e6f0fa; padding:8px 12px; border-radius:20px; display:inline-flex; align-items:center; gap:6px; font-size:14px; color:#0055b8; border:1px solid #b3d1f0; margin:4px 2px; text-align:left;}
-.selecionado-item .remover {background:red; color:white; border-radius:50%; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; border:none; margin-left:6px; flex-shrink:0;}
-.area-selecao {background:#eef5ff; border:2px solid #90caf9; padding:15px; border-radius:8px; margin:15px 0; text-align:left;}
-.area-opcao {display:flex; align-items:center; gap:10px; margin:8px 0; font-size:15px; text-align:left;}
-.area-opcao input {width:auto; margin:0;}
-.apoio-area {background:#f0f6fc; border:2px solid #b3d1f0; padding:15px; border-radius:8px; margin:15px 0; text-align:left;}
-.apoio-opcao {display:flex; align-items:center; gap:10px; margin:10px 0; font-size:15px; text-align:left;}
-.apoio-opcao input {width:auto; margin:0;}
-.apoio-subcampo {margin:8px 0 0 28px; text-align:left;}
-.preview-fotos {display:flex; flex-wrap:wrap; gap:10px; margin:10px 0; text-align:left;}
+.item-opcao:hover {background:#eef5ff;}
+.item-opcao.selecionado {background:#e6f0fa; font-weight:600;}
+.item-opcao input {width:auto; margin:0; padding:0; cursor:pointer;}
+.selecionados {display:flex; flex-wrap:wrap; gap:10px; margin:15px 0; min-height:50px; text-align:left; padding:8px 0;}
+.selecionado-item {background:#e6f0fa; padding:10px 14px; border-radius:25px; display:inline-flex; align-items:center; gap:8px; font-size:14px; color:#0055b8; border:1px solid #b3d1f0; margin:4px 2px;}
+.selecionado-item .remover {background:#d32f2f; color:white; border-radius:50%; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; border:none; margin-left:4px; flex-shrink:0; padding:0; line-height:1;}
+.preview-fotos {display:flex; flex-wrap:wrap; gap:12px; margin:12px 0; text-align:left;}
 .foto-item {position:relative; display:inline-block; margin:4px;}
-.foto-item img {width:80px; height:80px; object-fit:cover; border-radius:8px; border:2px solid #0055b8;}
-.foto-item .remover {position:absolute; top:-5px; right:-5px; background:red; color:white; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; border:none;}
-.previa {background:#f0f6fc; border:1px solid #0055b8; padding:15px; border-radius:8px; margin-top:20px; white-space:pre-wrap; font-size:14px; display:none; text-align:left; line-height: 1.8;}
-.aviso-copiar {background:#e3f2fd; border-left:4px solid #0288d1; padding:12px; margin-top:10px; border-radius:0 8px 8px 0; font-size:14px; display:none; text-align:left;}
-.aba-btn {background:#e0e0e0; color:#333; padding:8px 10px; font-size:13px; width:auto; margin:2px; border:none; border-radius:6px; text-align:left;}
+.foto-item img {width:90px; height:90px; object-fit:cover; border-radius:8px; border:2px solid #0055b8;}
+.foto-item .remover {position:absolute; top:-6px; right:-6px; background:red; color:white; border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; cursor:pointer; border:none; font-size:18px; line-height:1;}
+.previa {background:#f0f6fc; border:1px solid #0055b8; padding:18px; border-radius:10px; margin-top:25px; white-space:pre-wrap; font-size:14px; display:none; text-align:left; line-height:1.8;}
+.aviso-copiar {background:#e3f2fd; border-left:4px solid #0288d1; padding:12px; margin-top:12px; border-radius:0 8px 8px 0; font-size:14px; display:none;}
+.sucesso-salvo-planilha {background:#e8f5e9; border-left:4px solid #2e7d32; padding:14px; margin-top:15px; border-radius:0 8px 8px 0; font-weight:bold; color:#1b5e20; display:none;}
+.erro-salvo {background:#ffebee; border-left:4px solid #c62828; padding:14px; margin-top:15px; border-radius:0 8px 8px 0; color:#c62828; display:none;}
+.aba-btn {background:#e0e0e0; color:#333; padding:10px 14px; font-size:14px; width:auto; margin:3px; border:none; border-radius:8px; text-align:left; cursor:pointer;}
 .aba-btn.ativa {background:#6A1B9A; color:white;}
 .aba-conteudo {display:none;}
 .aba-conteudo.ativa {display:block;}
-.lista-nomes-admin {background:white; border:1px solid #b3d1f0; border-radius:8px; padding:10px; margin:8px 0; max-height:180px; overflow-y:auto;}
-.nome-item-admin {display:flex; justify-content:space-between; align-items:center; padding:6px 8px; border-bottom:1px solid #eef2f8; text-align:left;}
-.sucesso-salvo {color:#2e7d32; margin-top:10px; display:none; font-weight:bold; text-align:left;}
-.aviso-pequeno {font-size:12px; color:#666; margin:4px 0 10px; text-align:left;}
-.linha-dupla {display:flex; gap:10px;}
-.linha-dupla > div {flex:1;}
-h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
-.sucesso-msg {background:#e8f5e9; border-left:4px solid #2e7d32; padding:12px; margin-top:15px; border-radius:0 8px 8px 0; font-size:14px; display:none; text-align:left;}
+.lista-nomes-admin {background:white; border:1px solid #b3d1f0; border-radius:8px; padding:12px; margin:10px 0; max-height:200px; overflow-y:auto;}
+.nome-item-admin {display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-bottom:1px solid #eef2f8; text-align:left;}
+.sucesso-salvo {color:#2e7d32; margin-top:15px; display:none; font-weight:bold; text-align:left; padding:10px;}
+.aviso-pequeno {font-size:13px; color:#666; margin:6px 0 12px; text-align:left; line-height:1.4;}
+.linha-dupla {display:flex; gap:12px; flex-wrap:wrap;}
+.linha-dupla > div {flex:1; min-width:200px;}
+h4 {color:#6A1B9A; margin:20px 0 10px; font-size:16px; text-align:left;}
+.sucesso-msg {background:#e8f5e9; border-left:4px solid #2e7d32; padding:14px; margin-top:15px; border-radius:0 8px 8px 0; font-size:14px; display:none; text-align:left; font-weight:500;}
 </style>
 </head>
 <body>
@@ -74,84 +84,102 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
 <div id="telaExpirada" class="tela-expirada">
   <h2>Sistema Expirado</h2>
   <p>Para continuar, contate o Administrador.</p>
-  <label style="color:#c62828; margin-top:20px; text-align:center; display:block;">Senha de Administrador</label>
+  <label style="color:#c62828; margin-top:25px; text-align:center; display:block;">Senha de Administrador</label>
   <input type="password" id="senhaExpirada" placeholder="Digite a senha">
-  <button class="btn-senha" style="background:#6A1B9A; color:white; margin-top:10px;" onclick="verificarAcessoExpirado()">Acessar Painel</button>
+  <button class="btn-senha" style="background:#6A1B9A; color:white; margin-top:15px;" onclick="verificarAcessoExpirado()">Acessar Painel</button>
   <p id="erroExpirada" class="aviso-senha-erro">Senha incorreta! Tente novamente.</p>
-  <p style="margin-top:15px; font-size:13px; color:#666;">Desenvolvido por Cristiano Bastos</p>
+  <p style="margin-top:20px; font-size:13px; color:#666;">Desenvolvido por Cristiano Bastos</p>
 </div>
 
 <div id="formApp">
   <div class="aviso" id="avisoPrincipal">Selecione a Área Responsável e marque os nomes na lista</div>
+  
+  <!-- Formulário real para envio -->
+  <form id="formEnvio" action="https://script.google.com/macros/s/AKfycbx9sLjM-plhoIr3D_aT7hch7cji8IxRNTJva0PywNutOoPtE3ATkmU8d_chRm7DpApLhA/exec" method="POST" target="oculto">
+    <iframe name="oculto" style="display:none;"></iframe>
+    <input type="hidden" name="dados" id="campoDados">
+  </form>
+
   <div class="card">
     <label>1. Área Responsável *</label>
     <div class="area-selecao">
       <label class="area-opcao">
-        <input type="radio" name="area" value="Elétrica" onchange="carregarNomes()"> Elétrica
+        <input type="radio" name="area" value="Elétrica" onchange="carregarNomes()">
+        <span>Elétrica</span>
       </label>
       <label class="area-opcao">
-        <input type="radio" name="area" value="Mecânica" onchange="carregarNomes()"> Mecânica
+        <input type="radio" name="area" value="Mecânica" onchange="carregarNomes()">
+        <span>Mecânica</span>
       </label>
       <label class="area-opcao">
-        <input type="radio" name="area" value="Civil" onchange="carregarNomes()"> Civil
+        <input type="radio" name="area" value="Civil" onchange="carregarNomes()">
+        <span>Civil</span>
       </label>
     </div>
-    
+
     <label>2. Seu Nome *</label>
     <input type="text" id="quemEnvia" placeholder="Digite seu nome">
-    
+
     <label>3. Descrição da Atividade *</label>
     <textarea id="desc" placeholder="Descreva o que foi realizado..."></textarea>
-    
+
     <label>4. Local *</label>
     <input type="text" id="local" placeholder="Ex: Subestação 2">
-    
+
     <label>5. Data da Atividade *</label>
     <input type="date" id="dataAtividade">
-    
-    <label>6. Fotos</label>
+
+    <label>6. Fotos (pode selecionar várias) 📸</label>
     <input type="file" id="inputFotos" accept="image/*" multiple style="display:none;" onchange="processarFotos(this.files)">
     <button class="btn-foto" onclick="document.getElementById('inputFotos').click()">Selecionar Fotos</button>
     <div class="preview-fotos" id="previewFotos"></div>
-    
+
     <label>7. Apoio de Outras Áreas</label>
     <div class="apoio-area">
       <label class="apoio-opcao">
-        <input type="checkbox" id="apoioEle" onchange="mostrarApoio()"> Apoio da Elétrica
+        <input type="checkbox" id="apoioEle" onchange="mostrarApoio()">
+        <span>Apoio da Elétrica</span>
       </label>
       <div id="nomeEleDiv" class="apoio-subcampo" style="display:none;">
-        <input type="text" id="nomeEle" placeholder="Nome da pessoa de apoio">
+        <label style="margin-top:5px; font-size:14px; color:#555;">Nome da pessoa de apoio:</label>
+        <input type="text" id="nomeEle" placeholder="Digite o nome">
       </div>
-      <label class="apoio-opcao" style="margin-top:12px;">
-        <input type="checkbox" id="apoioMec" onchange="mostrarApoio()"> Apoio da Mecânica
+
+      <label class="apoio-opcao">
+        <input type="checkbox" id="apoioMec" onchange="mostrarApoio()">
+        <span>Apoio da Mecânica</span>
       </label>
       <div id="nomeMecDiv" class="apoio-subcampo" style="display:none;">
-        <input type="text" id="nomeMec" placeholder="Nome da pessoa de apoio">
+        <label style="margin-top:5px; font-size:14px; color:#555;">Nome da pessoa de apoio:</label>
+        <input type="text" id="nomeMec" placeholder="Digite o nome">
       </div>
-      <label class="apoio-opcao" style="margin-top:12px;">
-        <input type="checkbox" id="apoioCiv" onchange="mostrarApoio()"> Apoio da Civil
+
+      <label class="apoio-opcao">
+        <input type="checkbox" id="apoioCiv" onchange="mostrarApoio()">
+        <span>Apoio da Civil</span>
       </label>
       <div id="nomeCivDiv" class="apoio-subcampo" style="display:none;">
-        <input type="text" id="nomeCiv" placeholder="Nome da pessoa de apoio">
+        <label style="margin-top:5px; font-size:14px; color:#555;">Nome da pessoa de apoio:</label>
+        <input type="text" id="nomeCiv" placeholder="Digite o nome">
       </div>
     </div>
-    
+
     <label>8. Participantes da Equipe *</label>
-    <div id="avisoArea" class="aviso-area" style="color:#e65100; font-size:13px;">Selecione uma Área Responsável acima</div>
+    <div id="avisoArea" style="color:#e65100; font-size:14px; padding:8px 0;">Selecione uma Área Responsável acima</div>
     <div id="blocoSelecao" style="display:none;">
       <button type="button" class="btn-azul" onclick="alternarLista()">
         Toque para escolher <span id="seta">▼</span>
       </button>
-      <div id="listaNomes" class="lista-selecao-multipla" style="display:none; margin-top:8px;"></div>
-      <button type="button" class="btn-verde" style="margin:8px 0;" onclick="confirmarSelecao()">Confirmar Seleção</button>
+      <div id="listaNomes" class="lista-selecao-multipla" style="display:none; margin-top:10px;"></div>
+      <button type="button" class="btn-verde" style="margin:10px 0;" onclick="confirmarSelecao()">Confirmar Seleção</button>
     </div>
-    
+
     <label>Participante Temporário</label>
     <input type="text" id="participanteTemporario" placeholder="Nome do colaborador temporário">
-    
+
     <div class="selecionados" id="selecionados"></div>
     <button type="button" class="btn-azul" onclick="limparSelecao()">Limpar Todos</button>
-    
+
     <label>9. Status da Atividade</label>
     <select id="status">
       <option>Concluída</option>
@@ -159,58 +187,62 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
       <option>Em Andamento</option>
       <option>Pendente</option>
     </select>
-    
+
     <label>10. Materiais Pendentes</label>
     <textarea id="materiais" placeholder="Liste o que está faltando..."></textarea>
-    
+
     <label>11. Observações</label>
     <textarea id="obs" placeholder="Informações adicionais..."></textarea>
-    
+
     <button class="btn-principal" onclick="montarMensagem()">Montar Mensagem</button>
-    
+
     <div id="previa" class="previa">
       <strong>Mensagem pronta:</strong><br><br>
       <span id="textoMensagem"></span>
     </div>
-    
-    <button id="btnCopiar" class="btn-azul" style="display:none; margin-top:10px;" onclick="copiarMensagem()">Copiar Mensagem</button>
+
+    <button id="btnCopiar" class="btn-azul" style="display:none; margin-top:15px;" onclick="copiarMensagem()">Copiar Mensagem</button>
     <div id="avisoCopiado" class="aviso-copiar">✅ Mensagem copiada!</div>
-    
+
     <div id="sucessoMsg" class="sucesso-msg">Mensagem pronta para envio!</div>
-    
+
+    <div id="sucessoPlanilha" class="sucesso-salvo-planilha">✅ Dados e foto(s) salvos com sucesso!</div>
+    <div id="erroPlanilha" class="erro-salvo">❌ Erro ao salvar: <span id="textoErro"></span></div>
+
+    <button id="btnSalvarPlanilha" class="btn-salvar" style="display:none;" onclick="salvarNaPlanilha()">💾 Salvar na Planilha</button>
     <button id="btnWpp" class="btn-whatsapp" style="display:none;" onclick="abrirWpp()">Enviar para o Grupo</button>
     <button id="btnNovo" class="btn-laranja" style="display:none;" onclick="novoRegistro()">Novo Registro</button>
   </div>
-  
+
   <button class="btn-admin" onclick="abrirSenha()">Área do Administrador</button>
-  
+
   <div class="painel-senha card" id="painelSenha">
     <label>Digite a senha de Administrador:</label>
     <input type="password" id="senhaAdmin" placeholder="••••">
-    <div style="display:flex; gap:10px; margin-top:10px;">
+    <div style="display:flex; gap:12px; margin-top:15px;">
       <button class="btn-verde" style="flex:1;" onclick="verificarSenha()">Entrar</button>
       <button class="btn-cancelar" onclick="fecharSenha()">Cancelar</button>
     </div>
     <p id="erroSenha" class="aviso-senha-erro">Senha incorreta!</p>
   </div>
-  
+
   <div class="painel-admin" id="painelAdmin">
-    <h3 style="color:#6A1B9A; margin-bottom:15px;">Painel de Administração</h3>
-    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:15px;">
+    <h3 style="color:#6A1B9A; margin-bottom:20px;">Painel de Administração</h3>
+    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px;">
       <button class="aba-btn ativa" onclick="trocarAba(0)">Expiração</button>
       <button class="aba-btn" onclick="trocarAba(1)">Grupos</button>
       <button class="aba-btn" onclick="trocarAba(2)">Equipes</button>
       <button class="aba-btn" onclick="trocarAba(3)">Avisos</button>
       <button class="aba-btn" onclick="trocarAba(4)">Segurança</button>
     </div>
-    
+
     <div class="aba-conteudo ativa" id="aba0">
       <h4>Data de Expiração do Sistema</h4>
       <label>Validade do Aplicativo</label>
       <input type="date" id="dataExpiracao">
       <p class="aviso-pequeno">O sistema bloqueará o acesso após esta data</p>
     </div>
-    
+
     <div class="aba-conteudo" id="aba1">
       <h4>Links dos Grupos do WhatsApp</h4>
       <p class="aviso-pequeno" style="color:green; font-weight:bold;">✅ Links já configurados — prontos para uso!</p>
@@ -222,10 +254,10 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
       <input type="text" id="linkCiv" value="https://chat.whatsapp.com/BfTNOZuqUL47VaFdjvSjCp" readonly style="background:#e8f5e9; border-color:#2e7d32;">
       <p class="aviso-pequeno">Para alterar, contate o desenvolvedor</p>
     </div>
-    
+
     <div class="aba-conteudo" id="aba2">
       <h4>Gerenciamento de Equipes</h4>
-      <label style="margin-top:5px;">Elétrica</label>
+      <label style="margin-top:8px;">Elétrica</label>
       <div class="lista-nomes-admin" id="listaEle"></div>
       <div class="linha-dupla">
         <input type="text" id="novoNomeEle" placeholder="Nome">
@@ -244,29 +276,31 @@ h4 {color:#6A1B9A; margin:15px 0 8px; font-size:15px; text-align:left;}
         <button class="btn-azul" onclick="adicionarNome('Civil')">Adicionar</button>
       </div>
     </div>
-    
+
     <div class="aba-conteudo" id="aba3">
       <h4>Avisos do Aplicativo</h4>
       <label>Aviso Principal</label>
       <textarea id="avisoPrincipalTexto" rows="2"></textarea>
     </div>
-    
+
     <div class="aba-conteudo" id="aba4">
       <h4>Senha</h4>
       <p class="aviso-pequeno">Senha atual: 5863</p>
     </div>
-    
+
     <p id="salvoOk" class="sucesso-salvo">Configurações salvas!</p>
-    <div style="display:flex; gap:10px; margin-top:20px;">
+    <div style="display:flex; gap:12px; margin-top:25px;">
       <button class="btn-verde" style="flex:1;" onclick="salvarConfig()">Salvar Tudo</button>
       <button class="btn-cancelar" onclick="fecharAdmin()">Sair</button>
     </div>
   </div>
-  
+
   <div class="rodape">Desenvolvido por Cristiano Bastos</div>
 </div>
 
 <script>
+const ID_PASTA_DRIVE = "1IEX9t-veSwE8bzr_cM-JfU7CGguRTMgm";
+
 const LINKS_GRUPOS = {
   "Elétrica": "https://chat.whatsapp.com/E0NTlX2jqwa6BAOnYFiWFi",
   "Mecânica": "https://chat.whatsapp.com/GpQFU5Ut97t98knUGBA2AY",
@@ -339,22 +373,23 @@ function removerFoto(indice) {
   fotosBase64.splice(indice, 1);
   document.getElementById('inputFotos').value = '';
   document.getElementById('previewFotos').innerHTML = '';
+  fotosBase64.forEach((foto, i) => {
+    const div = document.createElement('div');
+    div.className = 'foto-item';
+    div.innerHTML = `<img src="${foto}" alt="Foto"><button class="remover" onclick="removerFoto(${i})">×</button>`;
+    document.getElementById('previewFotos').appendChild(div);
+  });
 }
 
 function carregarConfiguracoes() {
   const salvas = localStorage.getItem('configRDO');
   if (salvas) {
-    try {
-      cfg = { ...PADRAO, ...JSON.parse(salvas) };
-      cfg.links = { ...LINKS_GRUPOS };
-    } catch (e) { cfg = { ...PADRAO }; }
+    try { cfg = { ...PADRAO, ...JSON.parse(salvas) }; cfg.links = { ...LINKS_GRUPOS }; }
+    catch (e) { cfg = { ...PADRAO }; }
   } else { cfg = { ...PADRAO }; }
 }
 
-function iniciar() {
-  carregarConfiguracoes();
-  verificarExpiracao();
-}
+function iniciar() { carregarConfiguracoes(); verificarExpiracao(); }
 
 function verificarExpiracao() {
   const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
@@ -376,49 +411,20 @@ function verificarAcessoExpirado() {
   } else { document.getElementById('erroExpirada').style.display = 'block'; }
 }
 
-function abrirSenha() {
-  carregarConfiguracoes();
-  document.getElementById('painelSenha').style.display = 'block';
-  document.getElementById('senhaAdmin').value = '';
-  document.getElementById('erroSenha').style.display = 'none';
-}
-
+function abrirSenha() { carregarConfiguracoes(); document.getElementById('painelSenha').style.display = 'block'; document.getElementById('senhaAdmin').value = ''; document.getElementById('erroSenha').style.display = 'none'; }
 function fecharSenha() { document.getElementById('painelSenha').style.display = 'none'; }
-
-function verificarSenha() {
-  if (document.getElementById('senhaAdmin').value === cfg.senha) {
-    fecharSenha(); abrirPainelAdmin();
-  } else { document.getElementById('erroSenha').style.display = 'block'; }
-}
-
-function abrirPainelAdmin() {
-  carregarConfiguracoes();
-  document.getElementById('dataExpiracao').value = cfg.dataExpiracao;
-  document.getElementById('avisoPrincipalTexto').value = cfg.avisos.principal;
-  carregarListaEquipe('Elétrica');
-  carregarListaEquipe('Mecânica');
-  carregarListaEquipe('Civil');
-  document.getElementById('painelAdmin').style.display = 'block';
-}
-
-function fecharAdmin() {
-  document.getElementById('painelAdmin').style.display = 'none';
-  verificarExpiracao();
-}
-
-function trocarAba(n) {
-  document.querySelectorAll('.aba-btn').forEach((b, i) => b.classList.toggle('ativa', i === n));
-  document.querySelectorAll('.aba-conteudo').forEach((c, i) => c.classList.toggle('ativa', i === n));
-}
+function verificarSenha() { if (document.getElementById('senhaAdmin').value === cfg.senha) { fecharSenha(); abrirPainelAdmin(); } else { document.getElementById('erroSenha').style.display = 'block'; } }
+function abrirPainelAdmin() { carregarConfiguracoes(); document.getElementById('dataExpiracao').value = cfg.dataExpiracao; document.getElementById('avisoPrincipalTexto').value = cfg.avisos.principal; carregarListaEquipe('Elétrica'); carregarListaEquipe('Mecânica'); carregarListaEquipe('Civil'); document.getElementById('painelAdmin').style.display = 'block'; }
+function fecharAdmin() { document.getElementById('painelAdmin').style.display = 'none'; verificarExpiracao(); }
+function trocarAba(n) { document.querySelectorAll('.aba-btn').forEach((b, i) => b.classList.toggle('ativa', i === n)); document.querySelectorAll('.aba-conteudo').forEach((c, i) => c.classList.toggle('ativa', i === n)); }
 
 function carregarListaEquipe(area) {
   const idDiv = area === 'Elétrica' ? 'listaEle' : area === 'Mecânica' ? 'listaMec' : 'listaCiv';
-  const div = document.getElementById(idDiv);
-  div.innerHTML = '';
+  const div = document.getElementById(idDiv); div.innerHTML = '';
   cfg.equipes[area].sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach((nome, idx) => {
     const item = document.createElement('div');
     item.className = 'nome-item-admin';
-    item.innerHTML = `<span>${nome}</span><div style="display:flex; gap:4px;"><button class="btn-vermelho" style="padding:4px 8px; font-size:12px;" onclick="excluirNome('${area}',${idx})">Excluir</button></div>`;
+    item.innerHTML = `<span>${nome}</span><div style="display:flex; gap:6px;"><button class="btn-vermelho" style="padding:6px 10px; font-size:12px;" onclick="excluirNome('${area}',${idx})">Excluir</button></div>`;
     div.appendChild(item);
   });
 }
@@ -433,10 +439,7 @@ function adicionarNome(area) {
 }
 
 function excluirNome(area, idx) {
-  if (confirm(`Excluir "${cfg.equipes[area][idx]}"?`)) {
-    cfg.equipes[area].splice(idx, 1);
-    carregarListaEquipe(area);
-  }
+  if (confirm(`Excluir "${cfg.equipes[area][idx]}"?`)) { cfg.equipes[area].splice(idx, 1); carregarListaEquipe(area); }
 }
 
 function salvarConfig() {
@@ -455,41 +458,25 @@ function mostrarApoio() {
 
 function carregarNomes() {
   const area = document.querySelector('input[name="area"]:checked')?.value;
-  if (!area) {
-    document.getElementById('avisoArea').style.display = 'block';
-    document.getElementById('blocoSelecao').style.display = 'none';
-    return;
-  }
+  if (!area) { document.getElementById('avisoArea').style.display = 'block'; document.getElementById('blocoSelecao').style.display = 'none'; return; }
   document.getElementById('avisoArea').style.display = 'none';
   document.getElementById('blocoSelecao').style.display = 'block';
-  const lista = document.getElementById('listaNomes');
-  lista.innerHTML = '';
+  const lista = document.getElementById('listaNomes'); lista.innerHTML = '';
   cfg.equipes[area].sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach(nome => {
     const div = document.createElement('div');
     div.className = `item-opcao ${selecionados.includes(nome) ? 'selecionado' : ''}`;
-    div.innerHTML = `<input type="checkbox" id="n_${nome.replace(/'/g,"\\'")}" ${selecionados.includes(nome)?'checked':''} onchange="toggleNome('${nome.replace(/'/g,"\\'")}')"><label for="n_${nome.replace(/'/g,"\\'")}" style="margin:0; flex:1;">${nome}</label>`;
+    div.innerHTML = `<input type="checkbox" id="n_${nome.replace(/'/g,"\\'")}" ${selecionados.includes(nome)?'checked':''} onchange="toggleNome('${nome.replace(/'/g,"\\'")}')"><label for="n_${nome.replace(/'/g,"\\'")}" style="margin:0; flex:1; cursor:pointer;">${nome}</label>`;
     lista.appendChild(div);
   });
-  selecionados = selecionados.filter(n => cfg.equipes[area].includes(n));
+  selecionados = selecionados.filter(n => cfg.equipes[area].includes(nome));
   atualizarExibicaoSelecionados();
 }
 
-function alternarLista() {
-  listaAberta = !listaAberta;
-  document.getElementById('listaNomes').style.display = listaAberta ? 'block' : 'none';
-  document.getElementById('seta').textContent = listaAberta ? '▲' : '▼';
-}
-
-function toggleNome(nome) {
-  selecionados.includes(nome) ? selecionados = selecionados.filter(n=>n!==nome) : selecionados.push(nome);
-  atualizarExibicaoSelecionados();
-}
-
+function alternarLista() { listaAberta = !listaAberta; document.getElementById('listaNomes').style.display = listaAberta ? 'block' : 'none'; document.getElementById('seta').textContent = listaAberta ? '▲' : '▼'; }
+function toggleNome(nome) { selecionados.includes(nome) ? selecionados = selecionados.filter(n=>n!==nome) : selecionados.push(nome); atualizarExibicaoSelecionados(); }
 function confirmarSelecao() { alternarLista(); }
-
 function atualizarExibicaoSelecionados() {
-  const c = document.getElementById('selecionados');
-  c.innerHTML = '';
+  const c = document.getElementById('selecionados'); c.innerHTML = '';
   selecionados.forEach(nome => {
     const span = document.createElement('span');
     span.className = 'selecionado-item';
@@ -497,7 +484,6 @@ function atualizarExibicaoSelecionados() {
     c.appendChild(span);
   });
 }
-
 function limparSelecao() { selecionados = []; carregarNomes(); }
 
 function montarMensagem() {
@@ -507,54 +493,44 @@ function montarMensagem() {
   const local = document.getElementById('local').value.trim();
   const data = document.getElementById('dataAtividade').value;
   const temporario = document.getElementById('participanteTemporario').value.trim();
-  
+
   if (!area) return alert('Selecione a Área Responsável!');
   if (!quem) return alert('Informe seu Nome!');
   if (!desc) return alert('Preencha a Descrição!');
   if (!local) return alert('Informe o Local!');
   if (!data) return alert('Informe a Data da Atividade!');
   if (!selecionados.length && !temporario) return alert('Selecione os Participantes!');
-  
+
   const apoio = [];
   if (document.getElementById('apoioEle').checked) apoio.push(`Apoio Elétrica: ${document.getElementById('nomeEle').value || 'não informado'}`);
   if (document.getElementById('apoioMec').checked) apoio.push(`Apoio Mecânica: ${document.getElementById('nomeMec').value || 'não informado'}`);
   if (document.getElementById('apoioCiv').checked) apoio.push(`Apoio Civil: ${document.getElementById('nomeCiv').value || 'não informado'}`);
-  
+
   let participantesTexto = selecionados.join(', ');
   if (temporario) participantesTexto += (participantesTexto ? ', ' : '') + temporario + ' (Temporário)';
-  
+
   mensagemFinal = `REGISTRO DE ATIVIDADE - ${area}
-
-Data/Hora: ${new Date().toLocaleString('pt-BR')}
-
-Responsável: ${quem}
-
-Local: ${local}
-
-Data Atividade: ${data}
-
-Descrição:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📅 Data/Hora: ${new Date().toLocaleString('pt-BR')}
+👤 Responsável: ${quem}
+📍 Local: ${local}
+📆 Data Atividade: ${data}
+📝 Descrição:
 ${desc}
-
-Participantes:
+👥 Participantes:
 ${participantesTexto}
-${apoio.length ? '\nApoio:\n' + apoio.join('\n\n') : ''}
+${apoio.length ? '🤝 Apoio:\n' + apoio.join('\n') : ''}
+📊 Status: ${document.getElementById('status').value}
+📦 Materiais Pendentes: ${document.getElementById('materiais').value.trim() || 'Nenhum'}
+📌 Observações: ${document.getElementById('obs').value.trim() || 'Nenhuma'}
+📸 Fotos anexadas: ${fotosBase64.length}`;
 
-Status: ${document.getElementById('status').value}
-
-Materiais Pendentes:
-${document.getElementById('materiais').value.trim() || 'Nenhum'}
-
-Observações:
-${document.getElementById('obs').value.trim() || 'Nenhuma'}
-
-Fotos anexadas: ${fotosBase64.length}`;
-  
   document.getElementById('textoMensagem').textContent = mensagemFinal;
   document.getElementById('previa').style.display = 'block';
   document.getElementById('btnCopiar').style.display = 'inline-block';
   document.getElementById('sucessoMsg').style.display = 'block';
   document.getElementById('avisoCopiado').style.display = 'none';
+  document.getElementById('btnSalvarPlanilha').style.display = 'inline-block';
   document.getElementById('btnWpp').style.display = 'inline-block';
   document.getElementById('btnNovo').style.display = 'inline-block';
   alert("Mensagem montada com sucesso!");
@@ -568,14 +544,56 @@ function copiarMensagem() {
   });
 }
 
+function salvarNaPlanilha() {
+  const area = document.querySelector('input[name="area"]:checked')?.value;
+  const quem = document.getElementById('quemEnvia').value.trim();
+  const dataAtividade = document.getElementById('dataAtividade').value;
+  const local = document.getElementById('local').value.trim();
+  const desc = document.getElementById('desc').value.trim();
+  const temporario = document.getElementById('participanteTemporario').value.trim();
+
+  let participantesTexto = selecionados.join(', ');
+  if (temporario) participantesTexto += (participantesTexto ? ', ' : '') + temporario + ' (Temporário)';
+
+  const apoio = [];
+  if (document.getElementById('apoioEle').checked) apoio.push(`Apoio Elétrica: ${document.getElementById('nomeEle').value || 'não informado'}`);
+  if (document.getElementById('apoioMec').checked) apoio.push(`Apoio Mecânica: ${document.getElementById('nomeMec').value || 'não informado'}`);
+  if (document.getElementById('apoioCiv').checked) apoio.push(`Apoio Civil: ${document.getElementById('nomeCiv').value || 'não informado'}`);
+
+  const dados = {
+    area: area,
+    quemEnvia: quem,
+    dataAtividade: dataAtividade,
+    local: local,
+    desc: desc,
+    participantes: participantesTexto,
+    apoio: apoio.join(' | '),
+    status: document.getElementById('status').value,
+    materiais: document.getElementById('materiais').value.trim() || 'Nenhum',
+    obs: document.getElementById('obs').value.trim() || 'Nenhuma',
+    fotos: fotosBase64,
+    pastaDriveId: ID_PASTA_DRIVE
+  };
+
+  // Envia via formulário nativo (SEM CORS)
+  document.getElementById('campoDados').value = JSON.stringify(dados);
+  document.getElementById('formEnvio').submit();
+
+  // Mostra mensagem de sucesso após tempo
+  document.getElementById('sucessoPlanilha').style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('sucessoPlanilha').style.display = 'none';
+    // Limpa fotos
+    document.getElementById('previewFotos').innerHTML = '';
+    fotosBase64 = [];
+  }, 4000);
+}
+
 function abrirWpp() {
   const area = document.querySelector('input[name="area"]:checked')?.value;
   const linkGrupo = LINKS_GRUPOS[area];
   if (!linkGrupo) return alert('Grupo não encontrado!');
-  
-  // Copia a mensagem automaticamente antes de abrir
   navigator.clipboard.writeText(mensagemFinal).then(() => {
-    // Abre o link do grupo
     window.open(linkGrupo, '_blank');
   });
 }
